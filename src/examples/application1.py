@@ -9,18 +9,19 @@ import driver_icarus as di
 import time
 
 port = 'udpin:localhost:14551'
-#creamos el objeto de la clase Drone
+
+#Create object of Drone class
 icarus = di.Drone(port)
 
-#armar el drone
+#Arm the drone
 icarus.arm_disarm(1, 0)
 
-#Despegar el drone
+#Take off the drone
 icarus.takeoff(20)
 #time.sleep(10)
 
-#aterrizar el drone
+#Land the drone
 icarus.land()
 
-#desarmar el drone
+#Disarm the drone
 icarus.arm_disarm(0, 0)
