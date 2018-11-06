@@ -2,6 +2,7 @@
 It is about the driver that control all functionalities of Icarus
 
 # Usage and Functionality of Main Methods
+Here is explained the main methods included in pymavlink library used in the driver 'driver-icarus.py'
 ## mavutil.mavlink_connection(port)
 This method serves to open a serial, UDP, TCP or file mavlink connection, where "port" is the serial device or 
 the UDP ot TCP end point. In each case, port value is:
