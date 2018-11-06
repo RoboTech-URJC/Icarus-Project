@@ -53,4 +53,11 @@ This method serves to set the flight mode of the drone to any of different modes
 
 | Mode | Summary |
 | ---- | ------- |
+| Acro |  Holds attitude, no self-level   |
+| Cell |  Cell   |
+| Cell |  Cell   |
+| Cell |  Cell   |
+| Cell |  Cell   |
+| Cell |  Cell   |
+| Cell |  Cell   |
 | Cell |  Cell   |
