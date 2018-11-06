@@ -60,14 +60,15 @@ This method serves to set the flight mode of the drone to any of different modes
 | Brake |  Brings copter to an immediate stop   |
 | Circle |  Automatically circles a point in front of the vehicle   |
 | Drift |  Like stabilize, but coordinates yaw with roll like a plane   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
-| Cell |  Cell   |
+| Flip |  Rises and completes an automated flip   |
+| FlowHold |  Position control using Optical Flow   |
+| Follow |  Follows another vehicle   |
+| Guided |  Navigates to single points commanded by GCS   |
+| Land |  Reduces altitude to ground level, attempts to go straight down   |
+| Loiter |  Holds altitude and position, uses GPS for movements   |
+| PosHold |  Like loiter, but manual roll and pitch when sticks not centered   |
+| RTL |  Retruns above takeoff location, may aslo include landing   |
+| SmartRTL |  RTL, but traces path to get home   |
+| Stabilize |  Self-levels the roll and pitch axis   |
+| Sport |  Alt-hold, but holds pitch & roll when sticks centered   |
+| Throw |  Holds position after a throwing takeoff   |
