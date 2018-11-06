@@ -7,7 +7,7 @@ Here is explained the main methods used in the driver 'driver-icarus.py' include
 This method serves to open a serial, UDP, TCP or file mavlink connection, where "port" is the serial device or 
 the UDP ot TCP end point. In each case, port value is:
 * **Serial Device:** '/dev/ttyX'
-* **End Point:** 'udpin:IP:Port' for UDP conection; or 'tcpin:IP:Port' for tcp conection. 
+* **End Point:** 'udpin:IP:Port' for UDP connection; or 'tcpin:IP:Port' for tcp connection. 
 Example:
 ```
 ardupilot = mavutil.mavlink_connection('udpin:localhost:14551')
