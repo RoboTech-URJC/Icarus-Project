@@ -35,4 +35,15 @@ Receive any message from the drone. Example:
 msg = self.ardupilot.recv_msg()
 print msg
 ```
-We can put this code into a loop to read every time the messages the drone sends of the newt way:
+We can put this code into a loop to read every time the messages the drone sends.
+
+## mav.heartbeat_send()
+This method is very important because it serves to coordinate the pc with the drone. That function send a hearbeat message to the drone of the samme way that drone sended it to us and we could to read it using the method "recv_match()" previously mentioned. It is very important that the parameters we send to the drone with this method are the same. The header of this methos is as follows:
+```
+self.ardupilot.mav.heartbeat_send(type, autopilot, base_mode, custom_mode, system_status, mavlink_version)
+```
+You can see which are these parameters using the previous function as follows:
+```
+msg = ardupilot.recv_match(type='HEARTBEAT', blocking=True)
+print(msg)
+```
