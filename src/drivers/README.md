@@ -52,3 +52,4 @@ print(msg)
 This method serves to set the flight mode of the drone to any of different modes that exist. That modes are:
 | Mode | Summary |
 | ---- | ------- |
+| Cell |  Cell   |
