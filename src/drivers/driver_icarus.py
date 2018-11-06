@@ -11,19 +11,18 @@ class Drone:
         self.ardupilot_component_id = 1
 
         #To create la conection:
-        self.ardupilot = mavutil.mavlink_connection(port)
-        self.wait_for_connection()
+        self.ardupilot = mavutil.mavlink_connection(port) #Open the connection
+        self.wait_heartbeat() #prints the initial parameters of the drone
 
-        #Begin the comunication:
         self.ardupilot.mav.heartbeat_send(
-        6, # type
-        8, # autopilot
-        192, # base_mode
-        0, # custom_mode
-        4, # system_status
-        1  # mavlink_version
+        2, # type
+        3, # autopilot
+        81, # base_mode
+        9, # custom_mode
+        3, # system_status
+        3  # mavlink_version
         )
-
+        
     #HERE STARTS THE MAIN METHODS
 
     def arm_disarm(self, state, failsafe):
@@ -40,9 +39,9 @@ class Drone:
         if(is_correct(state) and is_correct(failsafe)):
 
             if(state == 1):
-                self.ardupilot.set_mode_apm('GUIDED') # set mode flight
+                self.change_mode('GUIDED') #set mode flight
             elif(state == 0):
-                self.ardupilot.set_mode_apm('LAND') # set mode flight
+                self.change_mode('LAND') #set mode flight
 
             self.ardupilot.mav.command_long_send(self.ardupilot_sys_id,
                                             self.ardupilot_component_id,
@@ -74,7 +73,7 @@ class Drone:
             while(alt < altitude - error_range):
                 alt = self.get_alt()
 
-        self.ardupilot.set_mode_apm('GUIDED') # set mode flight
+        self.change_mode('GUIDED') # set mode flight
         self.ardupilot.mav.command_long_send(self.ardupilot_sys_id,
                                         self.ardupilot_component_id,
                                         mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,
@@ -95,18 +94,10 @@ class Drone:
             while(alt > error_range):
                 alt = self.get_alt()
 
-        self.ardupilot.set_mode_apm('LAND')
+        self.change_mode('LAND')
         wait_to_land() #Block the method while drone is landing
 
     #HERE STARTS THE SECONDARY METHODS
-
-    def wait_for_connection(self):
-        msg= None
-        # wait for autopilot connection
-        while msg is None:
-                msg = self.ardupilot.recv_msg()
-
-        print msg
 
     def get_alt(self):
         '''
@@ -114,4 +105,25 @@ class Drone:
         '''
 
         param = self.ardupilot.recv_match(type='PARAM_VALUE') #receive all parameters
-        return self.ardupilot.messages['GLOBAL_POSITION_INT'].relative_alt * 0.001
+        alt = self.ardupilot.messages['GLOBAL_POSITION_INT'].relative_alt * 0.001
+
+        return alt
+
+    def change_mode(self, mode):
+        '''
+        Change the flight mode
+        '''
+
+        self.ardupilot.set_mode_apm(mode) # set mode flight
+        print("Mode changed to " + mode)
+
+    def wait_heartbeat(self):
+        '''
+        wait for a heartbeat so we know the target system IDs
+        '''
+
+        print("Waiting for APM heartbeat")
+        msg = self.ardupilot.recv_match(type='HEARTBEAT', blocking=True)
+        print(msg)
+        print("Heartbeat from APM (system %u component %u)" % (self.ardupilot.target_system,
+                                                                    self.ardupilot.target_system))
