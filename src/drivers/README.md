@@ -20,3 +20,9 @@ def mavlink_connection(device, baud=115200, source_system=255, source_component=
                        retries=3, use_native=default_native,
                        force_connected=False, progress_callback=None):
 ```
+
+## recv_match()
+Receive the next MAVLink message. It can receive parameters or not. His header is the next one:
+```
+def recv_match(self, condition=None, type=None, blocking=False, timeout=None):
+```
