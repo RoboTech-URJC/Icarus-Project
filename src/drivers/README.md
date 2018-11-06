@@ -73,4 +73,4 @@ This method serves to set the flight mode of the drone to any of different modes
 | Sport |  Alt-hold, but holds pitch & roll when sticks centered   |
 | Throw |  Holds position after a throwing takeoff   |
 
-For example, to change to 'Guided' mode: ``ardupilot.set_mode_apm('GUIDED')`` .
+For example, to change to "Guided" mode: ``ardupilot.set_mode_apm('GUIDED')`` .
