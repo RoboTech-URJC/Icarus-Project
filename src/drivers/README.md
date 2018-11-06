@@ -28,3 +28,10 @@ def recv_match(self, condition=None, type=None, blocking=False, timeout=None):
 ```
 In this case, we use that method to receive the initial parameters of configuration of the drone. This type of message is called "HEARTBEATE", so, if we want to receive this parameter, the sentence to do this will be                                              
 ``msg = ardupilot.recv_match(type='HEARTBEAT', blocking=True)``. The parameter "blocking" serves to make that the call to this method blocking. 
+
+## recv_msg()
+Receive any message from the drone. Example:
+```
+msg = self.ardupilot.recv_msg()
+print msg
+```
