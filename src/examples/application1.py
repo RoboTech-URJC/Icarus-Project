@@ -16,9 +16,9 @@ icarus = di.Drone(port)
 #Arm the drone
 icarus.arm_disarm(1, 0)
 
+
 #Take off the drone
 icarus.takeoff(20)
-#time.sleep(10)
 
 #Land the drone
 icarus.land()
