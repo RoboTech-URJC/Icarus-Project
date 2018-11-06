@@ -48,3 +48,6 @@ You can see which are these parameters using the previous function as follows:
 msg = ardupilot.recv_match(type='HEARTBEAT', blocking=True)
 print(msg)
 ```
+## set_mode_apm(mode)
+This method serves to set the flight mode of the drone to any of different modes that exist. That modes are:
+* **STABILIZE:** Allows you to fly your vehicle manually, but self-levels the roll and pitch axis.
