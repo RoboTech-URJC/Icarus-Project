@@ -74,3 +74,6 @@ This method serves to set the flight mode of the drone to any of different modes
 | Throw |  Holds position after a throwing takeoff   |
 
 For example, to change to "Guided" mode: ``ardupilot.set_mode_apm('GUIDED')`` .
+
+## mav.command_long_send()
+Serves to send commands to the drone. The parameters that it receives depend of the command type. [Here](http://ardupilot.org/planner/docs/common-mavlink-mission-command-messages-mav_cmd.html#common-mavlink-mission-command-messages-mav-cmd) are every commands and his usability
