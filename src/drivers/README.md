@@ -55,6 +55,16 @@ This method serves to set the flight mode of the drone to any of different modes
 | ---- | ------- |
 | Acro |  Holds attitude, no self-level   |
 | Alt Hold |  Holds altitude and self-levels the roll & pitch   |
+| Auto |  Executes pre-defined mission   |
+| AutoTune |  Executes pre-defined mission   |
+| Brake |  Brings copter to an immediate stop   |
+| Circle |  Automatically circles a point in front of the vehicle   |
+| Drift |  Like stabilize, but coordinates yaw with roll like a plane   |
+| Cell |  Cell   |
+| Cell |  Cell   |
+| Cell |  Cell   |
+| Cell |  Cell   |
+| Cell |  Cell   |
 | Cell |  Cell   |
 | Cell |  Cell   |
 | Cell |  Cell   |
