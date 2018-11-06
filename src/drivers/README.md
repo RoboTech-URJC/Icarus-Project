@@ -35,3 +35,4 @@ Receive any message from the drone. Example:
 msg = self.ardupilot.recv_msg()
 print msg
 ```
+We can put this code into a loop to read every time the messages the drone sends of the newt way:
