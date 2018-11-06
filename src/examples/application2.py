@@ -10,6 +10,7 @@ import driver_icarus as di
 import time
 
 port = 'udpin:localhost:14551'
+
 #Create object of Drone class
 icarus = di.Drone(port)
 try:
@@ -17,7 +18,6 @@ try:
 
         #Arm the drone
         icarus.arm_disarm(1, 0)
-        #time.sleep(5)
 
         #Take off the drone
         icarus.takeoff(15)
@@ -27,5 +27,6 @@ try:
 
         #Disarm the drone
         icarus.arm_disarm(0, 0)
+        
 except KeyboardInterrupt:
     icarus.land()
