@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import time
 from pymavlink import mavutil
-
 
 class Drone:
     def __init__(self, port):
@@ -23,7 +25,7 @@ class Drone:
         3, # system_status
         3  # mavlink_version
         )
-
+        
     #HERE STARTS THE MAIN METHODS
 
     def arm_disarm(self, state, failsafe):

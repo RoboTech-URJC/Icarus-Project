@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 '''
 Application that uses the driver 'driver-icarus'
 1) Arm the Drone
