@@ -7,7 +7,7 @@
 $ git clone https://github.com/mavlink/mavros
 ```
 
-**2.** We are going to delete some packages that we don't need and they only create problems beacause of dependencies. These packages are *mavros_extras* and *test_mavros*. So, type the following commands:
+**2.** We are going to delete some packages that we don't need and they only create problems because of dependencies. These packages are *mavros_extras* and *test_mavros*. So, type the following commands:
 ```
 $ cd ~/catkin_ws/src/mavros
 $ rm -rf test_mavros
@@ -30,4 +30,4 @@ To do this, type:
 $ sudo apt-get install ros-kinetic-mavlink
 ```
 
-Now, you can go back to your *catkin_make/* directory and compile all apckages typing ``$ catkin_make``
+Now, you can go back to your *catkin_make/* directory and compile all packages typing ``$ catkin_make``
