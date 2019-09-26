@@ -48,7 +48,7 @@ This command will launch the simulator
 
 **!!We have just the simulator installed!!**
 
-![Image](https://github.com/RoboTech-URJC/Icarus-Project/tree/master/docs/simulator_doc.png)
+![Image](https://github.com/RoboTech-URJC/Icarus-Project/tree/master/docs/simulator_doc.jpg)
 
 but...
 
