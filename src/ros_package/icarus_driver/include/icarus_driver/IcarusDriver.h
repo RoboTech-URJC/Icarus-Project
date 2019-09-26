@@ -16,6 +16,7 @@ namespace icarus_driver
     Icarus_Driver();
 
     void set_mode(std::string mode);
+    void arm_disarm(int arm);
 
   private:
 
