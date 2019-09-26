@@ -22,6 +22,10 @@ Icarus_Driver::Icarus_Driver():
 void
 Icarus_Driver::set_mode(std::string mode)
 {
+  /*
+   *param mode: flight mode you want to drone change
+   */
+
   //call to arming ros service
   ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::SetMode>("Service_Name");
 
@@ -33,6 +37,11 @@ Icarus_Driver::set_mode(std::string mode)
     ROS_INFO("%s", "Service call Bad");
   }
 
+}
+
+void
+arm_disarm(int arm){
+  
 }
 
 };
