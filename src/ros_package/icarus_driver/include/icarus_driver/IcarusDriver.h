@@ -17,6 +17,7 @@ namespace icarus_driver
 
     void set_mode(std::string mode);
     void arm_disarm(int arm);
+    void takeoff(float lat, float lon, float alt);
 
   private:
 

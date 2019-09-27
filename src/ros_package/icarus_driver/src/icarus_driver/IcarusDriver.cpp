@@ -7,6 +7,8 @@
 #include <ros/ros.h>
 #include "icarus_driver/IcarusDriver.h"
 #include "mavros_msgs/SetMode.h"
+#include "mavros_msgs/CommandBool.h"
+#include "mavros_msgs/CommandTOL.h"
 
 #include <string>
 
@@ -26,22 +28,69 @@ Icarus_Driver::set_mode(std::string mode)
    *param mode: flight mode you want to drone change
    */
 
-  //call to arming ros service
-  ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::SetMode>("Service_Name");
+  //call to ros service
+  ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::SetMode>("/mavros/set_mode");
 
   mavros_msgs::SetMode setmode;
   setmode.request.custom_mode = mode;
   if(sc.call(setmode)){
-    ROS_INFO("%s", "Service Call Good");
+    ROS_INFO("%s", "Set Mode Saccesfully");
   }else{
-    ROS_INFO("%s", "Service call Bad");
+    ROS_ERROR("%s", "Set Mode Failed");
   }
 
 }
 
 void
-arm_disarm(int arm){
-  
+Icarus_Driver::arm_disarm(int arm){
+  /*
+   * param arm: if 1, amr drone, if 0, disarm drone
+   */
+   if(arm != 0 && arm != 1){
+     ROS_ERROR("%s", "ERROR ARMING PARAM");
+   }else{
+     //call to ros service
+     ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::CommandBool>("/mavros/cmd/arming");
+
+     mavros_msgs::CommandBool arming;
+
+     std::string s;
+     if(arm == 1){
+       s = "Armed";
+       arming.request.value = true;
+     }else{
+       s = "Disarmed";
+       arming.request.value = false;
+     }
+
+     if(sc.call(arming)){
+       ROS_INFO("%s %s", s.c_str(), "Succesfully");
+     }else{
+       ROS_ERROR("%s %s", s.c_str(), "Failed");
+     }
+
+   }
+}
+
+void
+Icarus_Driver::takeoff(float lat, float lon, float alt)
+{
+  /*
+   * params: latitude, longitude and altitude to takeoff
+   */
+   ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::CommandTOL>("/mavros/cmd/takeoff");
+
+   mavros_msgs::CommandTOL take_off;
+
+   take_off.request.latitude = lat;
+   take_off.request.longitude = lon;
+   take_off.request.altitude = alt;
+
+   if(sc.call(take_off)){
+     ROS_INFO("%s", "Take Off Succesfully");
+   }else{
+     ROS_ERROR("%s","take Off Failed");
+   }
 }
 
 };
