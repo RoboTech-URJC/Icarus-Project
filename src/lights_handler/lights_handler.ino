@@ -1,5 +1,3 @@
-#include <Thread.h>
-
 //CONSTANTS
 enum{
   MaxString = 12,
