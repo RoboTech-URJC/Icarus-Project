@@ -17,7 +17,7 @@ public:
     init_params();
 
     is_active_ = false;
-    flight_mode_ = "STABILIZE";
+    flight_mode_ = "";
 
     st_subscriber_ = nh_.subscribe(st_topic_, 1, &Executor::states_machine_Cb, this);
     mode_subscriber_ = nh_.subscribe(flight_mode_topic_, 1, &Executor::flight_mode_Cb, this);
