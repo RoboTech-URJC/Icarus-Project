@@ -4,10 +4,15 @@ import rospy
 from std_msgs.msg import String
 
 import serial
+import os
+
+#Global variable:
+NodeName = 'ack_notifier_node'
 
 class Notifier():
     def __init__(self):
-        ser_ = None
+        self.ser_ = None
+        self.port_ = None
 
         self.init_params()
 
@@ -15,22 +20,26 @@ class Notifier():
 
     def init_params(self):
 
-        port = rospy.get_param('arduino_port', "/dev/ttyACM0")
+        self.port_ = rospy.get_param('arduino_port', "/dev/ttyACM0")
         baudrate = rospy.get_param('baudrate', "9600")
-
-        self.ser_ = serial.Serial(port, baudrate)
+        try:
+            self.ser_ = serial.Serial(self.port_, baudrate)
+        except serial.serialutil.SerialException:
+            self.raise_except()
 
     def callback(self, data):
         #b = bytes(data.data)
         self.ser_.write(data.data)
 
-
-rospy.init_node('ack_notifier_node')
-
-rate = rospy.Rate(10) #10 Hz
+    def raise_except(self):
+        rospy.logerr("[%s] Ligths Handler Serial Port could not be opened\n", self.port_)
+        os.system("rosnode kill "+ NodeName)
 
 if __name__ == "__main__":
 
+    rospy.init_node(NodeName)
+
+    rate = rospy.Rate(10) #10 Hz
     try:
 
         notifier = Notifier()
