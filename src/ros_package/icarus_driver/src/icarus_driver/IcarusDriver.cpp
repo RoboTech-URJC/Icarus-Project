@@ -9,6 +9,7 @@
 #include "mavros_msgs/SetMode.h"
 #include "mavros_msgs/CommandBool.h"
 #include "mavros_msgs/CommandTOL.h"
+#include <std_msgs/String.h>
 
 #include <string>
 
@@ -19,6 +20,8 @@ Icarus_Driver::Icarus_Driver():
   nh_("~")
 {
   ROS_INFO("%s", "Hello World! I'm Icarus Drone");
+
+  ack_notifier_ = nh_.advertise<std_msgs::String>("/icarus_driver/ack_notify", 1);
 }
 
 void
@@ -33,18 +36,24 @@ Icarus_Driver::set_mode(std::string mode)
 
   mavros_msgs::SetMode setmode;
   setmode.request.custom_mode = mode;
+
+  std::string msg;
+
   if(sc.call(setmode)){
-    ROS_INFO("%s", "Set Mode Saccesfully");
+    msg = "a";
+    ROS_INFO("%s", "Set mode Succesfully");
   }else{
-    ROS_ERROR("%s", "Set Mode Failed");
+    msg = "b";
+    ROS_INFO("%s", "Set mode Failed");
   }
 
+  notify_ack(msg);
 }
 
 void
 Icarus_Driver::arm_disarm(int arm){
   /*
-   * param arm: if 1, amr drone, if 0, disarm drone
+   * param arm: if 1, arm drone, if 0, disarm drone
    */
    if(arm != 0 && arm != 1){
      ROS_ERROR("%s", "ERROR ARMING PARAM");
@@ -91,6 +100,17 @@ Icarus_Driver::takeoff(float lat, float lon, float alt)
    }else{
      ROS_ERROR("%s","take Off Failed");
    }
+}
+
+//PRIVATE METHODS
+
+void
+Icarus_Driver::notify_ack(std::string msg)
+{
+  std_msgs::String m;
+
+  m.data = msg;
+  ack_notifier_.publish(m);
 }
 
 };
