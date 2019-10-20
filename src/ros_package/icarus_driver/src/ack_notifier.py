@@ -20,8 +20,8 @@ class Notifier():
 
     def init_params(self):
 
-        self.port_ = rospy.get_param('arduino_port', "/dev/ttyACM0")
-        baudrate = rospy.get_param('baudrate', "9600")
+        self.port_ = rospy.get_param('~arduino_port', '/dev/ttyACM0')
+        baudrate = rospy.get_param('~baudrate', '9600')
         try:
             self.ser_ = serial.Serial(self.port_, baudrate)
         except serial.serialutil.SerialException:
