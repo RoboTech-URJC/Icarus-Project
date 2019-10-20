@@ -1,0 +1,13 @@
+<launch>
+
+	<!-- launch set_mode node -->
+	<arg name="states_machine_topic" default="/icarus_driver/states_machine" />
+	<arg name="flight_mode_topic" default="/icarus_driver/flight_mode" />
+
+	<node pkg="icarus_driver" type="set_mode" name="set_mode_node" output="screen" />
+
+	<!-- launch ack_notifier node -->
+	<node pkg="icarus_driver" type="ack_notifier.py" name="ack_notifier_node" output="screen" />
+
+
+</launch>

@@ -21,7 +21,14 @@ namespace icarus_driver
 
   private:
 
+    enum{
+      NumberOfSends = 300,
+    };
+
+    void notify_ack(std::string msg); //notify if last command wass succesfully or not
+
     ros::NodeHandle nh_;
+    ros::Publisher ack_notifier_;
 
   };
 

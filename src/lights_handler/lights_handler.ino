@@ -1,8 +1,3 @@
-//CONSTANTS
-enum{
-  MaxString = 12,
-};
-
 class Lights
 {
 
@@ -19,23 +14,41 @@ public:
 
   void
   run(char state){
-    if(state == 'r'){
+    if(state == 'a'){
+      
+      Lights::turn_off(Lights::red_led);
+      Lights::turn_on(Lights::green_led);
+      Lights::turn_off(Lights::blue_led);
+      
+    }else if(state == 'b'){
       
       Lights::turn_on(Lights::red_led);
       Lights::turn_off(Lights::green_led);
       Lights::turn_off(Lights::blue_led);
       
-    }else if(state == 'g'){
-      
-      Lights::turn_on(Lights::green_led);
-      Lights::turn_off(Lights::red_led);
-      Lights::turn_off(Lights::blue_led);
-      
-    }else if(state == 'b'){
+    }else if(state == 'c'){
       
       Lights::turn_on(Lights::blue_led);
       Lights::turn_off(Lights::red_led);
       Lights::turn_off(Lights::green_led);
+    }else if(state == 'p'){
+      Lights::turn_off(Lights::red_led);
+      Lights::turn_off(Lights::green_led);
+      Lights::turn_off(Lights::blue_led);
+      Lights::blink_led(Lights::blue_led, 5);
+    }
+  }
+
+  void
+  sleep(unsigned long t0, float freq)
+  {
+    int dead_time;
+    unsigned long tf, elapsed;
+    tf = millis();
+    elapsed = tf - t0;
+    dead_time = (int) ((1.0 / freq) - elapsed);
+    if(dead_time > 0){
+      delay(dead_time);
     }
   }
 
@@ -56,7 +69,7 @@ private:
   void 
   turn_off(int pin_out)
   {
-    digitalWrite(pin_out,LOW);
+    digitalWrite(pin_out, LOW);
   }
 
   void 
@@ -66,21 +79,15 @@ private:
   }
 
   void 
-  blink_led(int pin_out,float hertz, float t_blinking)
+  blink_led(int pin_out, float hertz)
   { 
-    float interval = (1.0/hertz)*1000.0;
-    long i = millis()+ t_blinking * 1000.0;
+    float interval = (1.0 / hertz) * 1000.0;
     
-    while(millis()<i){
-      
-      turn_on(pin_out);
-      delay(interval);
-      
-      turn_off(pin_out);
-      delay(interval);
-    }
-  
+    turn_on(pin_out);
+    delay(interval);
+    
     turn_off(pin_out);
+    delay(interval);
       
   }
   
@@ -94,7 +101,8 @@ setup()
   Serial.begin(9600);
 }
 
-char state;
+char state = ' ';
+unsigned long t0;
 void 
 loop() 
 {
@@ -103,10 +111,11 @@ loop()
    */
   
   //read state
+  t0 = millis();
   state = Serial.read();
-  Serial.println(state);
+  //Serial.println(state);
   //exec state
   lights.run(state);
-  delay(50);
+  lights.sleep(t0, 12.0);
   
 }
