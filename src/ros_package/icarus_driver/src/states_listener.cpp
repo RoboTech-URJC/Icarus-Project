@@ -48,5 +48,7 @@ main(int argc, char **argv)
 	ros::NodeHandle nh;
 	ros::ServiceServer states_service = nh.advertiseService("change_state", change_state);
 
+	ros::spin();
+
   return 0;
 }
