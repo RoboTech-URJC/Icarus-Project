@@ -6,12 +6,13 @@
 #include "icarus_driver_msgs/states.h"
 #include "icarus_driver_msgs/state.h"
 #include "mavros_msgs/State.h"
+#include "boca_negra/Bocanegra.h"
 
-class Executor
+class Executor: public boca_negra::Bocanegra
 {
 public:
   Executor():
-    nh_("~")
+    Bocanegra(), nh_("~")
   {
 
     init_params();
@@ -106,7 +107,8 @@ private:
 
 };
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
   ros::init(argc, argv, "set_mode_node");
   Executor executor;

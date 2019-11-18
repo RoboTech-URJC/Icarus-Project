@@ -128,9 +128,16 @@ include_directories(
  add_library(${PROJECT_NAME}
    src/${PROJECT_NAME}/IcarusDriver.cpp
  )
+ add_library(boca_negra
+   src/boca_negra/Bocanegra.cpp
+ )
 
 add_executable(set_mode src/set_mode.cpp)
 target_link_libraries(set_mode ${catkin_LIBRARIES} ${PROJECT_NAME})
+target_link_libraries(set_mode ${catkin_LIBRARIES} boca_negra)
+
+add_executable(states_listener src/states_listener.cpp)
+target_link_libraries(states_listener ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
