@@ -23,5 +23,7 @@
 		<param name="baudrate" value="$(arg baudrate)" />
 	</node>
 
+	<!-- launch states_listener -->
+	<node pkg="icarus_driver" type="states_listener" name="states_listener_node" />
 
 </launch>

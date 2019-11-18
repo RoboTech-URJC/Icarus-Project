@@ -19,10 +19,14 @@ namespace boca_negra
 		void activate(std::string node_name);
 		void deactivate(std::string node_name);
 
+		bool is_active();
+
 	private:
 
 		ros::NodeHandle nh_;
-		ros::ServiceClient client_state_service;
+		ros::ServiceClient activate_client_service_, is_active_client_srv_;
+
+		std::string this_node_;
 
 	};
 };
