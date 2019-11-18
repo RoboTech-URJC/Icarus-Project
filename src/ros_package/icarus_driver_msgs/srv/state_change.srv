@@ -1,0 +1,5 @@
+std_msgs/String node_name
+std_msgs/Bool active
+---
+std_msgs/String node_name
+std_msgs/Bool active
