@@ -5,6 +5,7 @@ Hardware consist of a PCB designed in easyeda, 12 transistors **2N2222** , 12 re
 # Software
 The purpose of the controller mainly is to control with PWM signal the bright of led as well as create a code of colors which allow to controllers to verify what the drone is really doing on air. Programmed in Arduino (C++) the code drives the beheviaour of the lights
 
+# Connections
  ARDUINO PIN (nano) | COLOR LED |  MOTOR
 ----------------------|-----------|----
 HEAD
