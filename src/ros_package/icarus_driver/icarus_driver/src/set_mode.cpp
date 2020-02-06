@@ -8,11 +8,11 @@
 #include "mavros_msgs/State.h"
 #include "boca_negra/Bocanegra.h"
 
-class Executor: public boca_negra::Bocanegra
+class Executor
 {
 public:
   Executor():
-    Bocanegra(), nh_("~")
+    nh_("~")
   {
 
     init_params();
@@ -33,7 +33,11 @@ public:
     if(is_active_)
     {
       ROS_INFO("Active");
+      if(flight_mode_ == "")
+        return;
       icarus_.set_mode(flight_mode_);
+    }else{
+      flight_mode_ = "";
     }
   }
 
