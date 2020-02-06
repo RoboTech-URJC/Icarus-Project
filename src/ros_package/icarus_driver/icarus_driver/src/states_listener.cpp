@@ -59,6 +59,8 @@ is_active(icarus_driver_msgs::state_change::Request  &req,
 
   res.node_name = req.node_name;
   res.active = it->is_active;
+
+  return true;
 }
 
 int
@@ -68,7 +70,7 @@ main(int argc, char **argv)
 
 	ros::NodeHandle nh;
 	ros::ServiceServer activate_server_srv_ = nh.advertiseService("change_state", change_state);
-  ros::ServiceServer is_active_server_srv_ = nh.advertiseService("is_active", change_state);
+  ros::ServiceServer is_active_server_srv_ = nh.advertiseService("is_active", is_active);
 
 	ros::spin();
 
