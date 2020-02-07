@@ -3,10 +3,9 @@
 #include <std_msgs/Empty.h>
 
 #include "icarus_driver/IcarusDriver.h"
-#include "icarus_driver_msgs/states.h"
-#include "icarus_driver_msgs/state.h"
+#include "boca_negra_msgs/states.h"
+#include "boca_negra_msgs/state.h"
 #include "mavros_msgs/State.h"
-#include "boca_negra/Bocanegra.h"
 
 class Executor
 {
@@ -57,9 +56,9 @@ private:
   }
 
   void
-  states_machine_Cb(const icarus_driver_msgs::states::ConstPtr& msg)
+  states_machine_Cb(const boca_negra_msgs::states::ConstPtr& msg)
   {
-    std::vector<icarus_driver_msgs::state> v = msg->array;
+    std::vector<boca_negra_msgs::state> v = msg->array;
     bool finish = false;
     int iterator = 0;
     while(! finish && iterator < v.size())
@@ -93,8 +92,7 @@ private:
     flight_mode_topic_ = "/icarus_driver/flight_mode";
     is_finished_topic_ = "/icarus_driver/set_mode/is_finished";
     drone_state_topic_ = "/mavros/state";
-
-    nh_.param("states_machine_topic", st_topic_, st_topic_);
+    
     nh_.param("flight_mode_topic", flight_mode_topic_, flight_mode_topic_);
     nh_.param("is_finished_topic", is_finished_topic_, is_finished_topic_);
     nh_.param("drone_state_topic", drone_state_topic_, drone_state_topic_);
