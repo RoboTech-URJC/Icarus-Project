@@ -3,10 +3,9 @@
 #include <std_msgs/Empty.h>
 
 #include "icarus_driver/IcarusDriver.h"
-#include "icarus_driver_msgs/states.h"
-#include "icarus_driver_msgs/state.h"
+#include "boca_negra_msgs/states.h"
+#include "boca_negra_msgs/state.h"
 #include "mavros_msgs/State.h"
-#include "boca_negra/Bocanegra.h"
 
 class Executor
 {
@@ -57,9 +56,9 @@ private:
   }
 
   void
-  states_machine_Cb(const icarus_driver_msgs::states::ConstPtr& msg)
+  states_machine_Cb(const boca_negra_msgs::states::ConstPtr& msg)
   {
-    std::vector<icarus_driver_msgs::state> v = msg->array;
+    std::vector<boca_negra_msgs::state> v = msg->array;
     bool finish = false;
     int iterator = 0;
     while(! finish && iterator < v.size())

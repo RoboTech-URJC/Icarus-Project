@@ -8,16 +8,16 @@
 #include <string>
 #include <iterator>
 
-#include "icarus_driver_msgs/state_change.h"
-#include "icarus_driver_msgs/state.h"
+#include "boca_negra_msgs/state_change.h"
+#include "boca_negra_msgs/state.h"
 
 //Global const
-std::vector<icarus_driver_msgs::state> v;
+std::vector<boca_negra_msgs::state> v;
 
 
 bool
-change_state(icarus_driver_msgs::state_change::Request  &req,
-            	icarus_driver_msgs::state_change::Response &res)
+change_state(boca_negra_msgs::state_change::Request  &req,
+            	boca_negra_msgs::state_change::Response &res)
 {
 	bool finish = false;
 	int i = 0;
@@ -26,7 +26,7 @@ change_state(icarus_driver_msgs::state_change::Request  &req,
 		finish = v.at(i).node_name.data.compare(req.node_name.data) == 0;
 	}
 
-	icarus_driver_msgs::state s;
+	boca_negra_msgs::state s;
 	if(finish){
 		v.at(i).is_active = req.active;
 	}else{
@@ -42,14 +42,14 @@ change_state(icarus_driver_msgs::state_change::Request  &req,
 }
 
 bool
-is_active(icarus_driver_msgs::state_change::Request  &req,
-            	icarus_driver_msgs::state_change::Response &res)
+is_active(boca_negra_msgs::state_change::Request  &req,
+            	boca_negra_msgs::state_change::Response &res)
 {
   std::string str, str_node;
 
   str_node = req.node_name.data;
 
-  std::vector<icarus_driver_msgs::state>::iterator it;
+  std::vector<boca_negra_msgs::state>::iterator it;
   for(it = v.begin(); it < v.end(); it++){
     str = it->node_name.data;
     if(str.compare(str_node) == 0){
