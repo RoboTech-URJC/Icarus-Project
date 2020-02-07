@@ -19,7 +19,6 @@ Bocanegra::Bocanegra():
 	nh_()
 {
 	this_node_ = ros::this_node::getName();
-	ROS_INFO("%s\n", this_node_.c_str());
 
 	activate_client_service_ = nh_.serviceClient<icarus_driver_msgs::state_change>("change_state");
 	is_active_client_srv_ = nh_.serviceClient<icarus_driver_msgs::state_change>("is_active");
