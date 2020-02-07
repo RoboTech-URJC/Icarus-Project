@@ -92,8 +92,7 @@ private:
     flight_mode_topic_ = "/icarus_driver/flight_mode";
     is_finished_topic_ = "/icarus_driver/set_mode/is_finished";
     drone_state_topic_ = "/mavros/state";
-
-    nh_.param("states_machine_topic", st_topic_, st_topic_);
+    
     nh_.param("flight_mode_topic", flight_mode_topic_, flight_mode_topic_);
     nh_.param("is_finished_topic", is_finished_topic_, is_finished_topic_);
     nh_.param("drone_state_topic", drone_state_topic_, drone_state_topic_);
