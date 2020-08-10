@@ -4,9 +4,10 @@
 
 /* Author: Fernando Gonzalez fergonzaramos@yahoo.es  */
 
-#include <ros/ros.h>
-
 #include <string>
+#include <ros/ros.h>
+#include "boca_negra_msgs/states.h"
+#include "boca_negra_msgs/state.h"
 
 namespace boca_negra
 {
@@ -23,9 +24,14 @@ namespace boca_negra
 
 	private:
 
-		ros::NodeHandle nh_;
-		ros::ServiceClient activate_client_service_, is_active_client_srv_;
+		void statesCallback(const boca_negra_msgs::states::ConstPtr msg);
 
+		ros::NodeHandle nh_;
+
+		ros::ServiceClient activate_client_service_, is_active_client_srv_;
+		ros::Subscriber states_sub_;
+
+		std::vector<boca_negra_msgs::state>v_;
 		std::string this_node_;
 
 	};
