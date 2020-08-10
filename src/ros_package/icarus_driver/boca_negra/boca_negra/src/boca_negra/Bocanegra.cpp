@@ -8,9 +8,8 @@
 #include <string>
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
-
 #include "boca_negra/Bocanegra.h"
-#include "icarus_driver_msgs/state_change.h"
+#include "boca_negra_msgs/state_change.h"
 
 namespace boca_negra
 {
@@ -20,23 +19,30 @@ Bocanegra::Bocanegra():
 {
 	this_node_ = ros::this_node::getName();
 
-	activate_client_service_ = nh_.serviceClient<icarus_driver_msgs::state_change>("change_state");
-	is_active_client_srv_ = nh_.serviceClient<icarus_driver_msgs::state_change>("is_active");
+	states_sub_ = nh_.subscribe(
+		"/boca_negra/states", 1, &Bocanegra::statesCallback, this);
+
+	activate_client_service_ = nh_.serviceClient<boca_negra_msgs::state_change>("change_state");
+	// Este servicio hay que quitarlo
+	is_active_client_srv_ = nh_.serviceClient<boca_negra_msgs::state_change>("is_active");
 }
 
 bool
 Bocanegra::is_active()
 {
-	std_msgs::String nn;
-	icarus_driver_msgs::state_change srv;
-
-	nn.data = this_node_;
-	srv.request.node_name = nn;
-	if(! activate_client_service_.call(srv)){
-		ROS_ERROR("%s\n", "Ros Srvice Failed");
+	int i = 0;
+	bool finish = false;
+	while (!finish && i < v_.size()) {
+		finish = v_.at(i).node_name.data.compare(this_node_) == 0;
+		if (finish)
+			break;
+		i++;
 	}
 
-	return srv.response.active.data;
+	if (!finish)
+		return false;
+
+	return v_.at(i).is_active.data;
 }
 
 void
@@ -44,7 +50,7 @@ Bocanegra::activate(std::string node_name)
 {
 	std_msgs::String nn;
 	std_msgs::Bool b;
-	icarus_driver_msgs::state_change srv;
+	boca_negra_msgs::state_change srv;
 
 	nn.data = node_name;
 	b.data = true;
@@ -61,7 +67,7 @@ Bocanegra::deactivate(std::string node_name)
 {
 	std_msgs::String nn;
 	std_msgs::Bool b;
-	icarus_driver_msgs::state_change srv;
+	boca_negra_msgs::state_change srv;
 
 	nn.data = node_name;
 	b.data = false;
@@ -71,6 +77,12 @@ Bocanegra::deactivate(std::string node_name)
 	if(! activate_client_service_.call(srv)){
 		ROS_ERROR("%s\n", "Ros Srvice Failed");
 	}
+}
+
+void
+Bocanegra::statesCallback(const boca_negra_msgs::states::ConstPtr msg)
+{
+	v_ = msg->array;
 }
 
 };

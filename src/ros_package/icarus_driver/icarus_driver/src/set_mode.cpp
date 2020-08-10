@@ -1,7 +1,6 @@
 #include <ros/ros.h>
 #include <string>
 #include <std_msgs/Empty.h>
-
 #include "icarus_driver/IcarusDriver.h"
 #include "boca_negra_msgs/states.h"
 #include "boca_negra_msgs/state.h"
@@ -10,8 +9,8 @@
 class Executor
 {
 public:
-  Executor():
-    nh_("~")
+  Executor()
+  : nh_("~")
   {
 
     init_params();
@@ -92,7 +91,7 @@ private:
     flight_mode_topic_ = "/icarus_driver/flight_mode";
     is_finished_topic_ = "/icarus_driver/set_mode/is_finished";
     drone_state_topic_ = "/mavros/state";
-    
+
     nh_.param("flight_mode_topic", flight_mode_topic_, flight_mode_topic_);
     nh_.param("is_finished_topic", is_finished_topic_, is_finished_topic_);
     nh_.param("drone_state_topic", drone_state_topic_, drone_state_topic_);
