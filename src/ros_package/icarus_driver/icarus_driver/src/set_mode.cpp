@@ -5,20 +5,20 @@
 #include "boca_negra_msgs/states.h"
 #include "boca_negra_msgs/state.h"
 #include "mavros_msgs/State.h"
+#include "boca_negra/Bocanegra.h"
 
-class Executor
+class Executor : public boca_negra::Bocanegra
 {
 public:
   Executor()
-  : nh_("~")
+  : boca_negra::Bocanegra(), nh_("~")
   {
 
     init_params();
 
     is_active_ = false;
     flight_mode_ = "";
-
-    st_subscriber_ = nh_.subscribe(st_topic_, 1, &Executor::states_machine_Cb, this);
+    
     mode_subscriber_ = nh_.subscribe(flight_mode_topic_, 1, &Executor::flight_mode_Cb, this);
     drone_state_subscriber_ = nh_.subscribe(drone_state_topic_, 1, &Executor::drone_state_Cb, this);
 
@@ -28,7 +28,7 @@ public:
   void
   update()
   {
-    if(is_active_)
+    if(is_active())
     {
       ROS_INFO("Active");
       if(flight_mode_ == "")
@@ -51,27 +51,6 @@ private:
       {
         is_finished_publisher_.publish(m);
       }
-    }
-  }
-
-  void
-  states_machine_Cb(const boca_negra_msgs::states::ConstPtr& msg)
-  {
-    std::vector<boca_negra_msgs::state> v = msg->array;
-    bool finish = false;
-    int iterator = 0;
-    while(! finish && iterator < v.size())
-    {
-      if(v[iterator].node_name.data == "set_mode_node")
-      {
-        finish = true;
-      }else{
-        iterator++;
-      }
-    }
-    if(finish)
-    {
-      is_active_ = v[iterator].is_active.data;
     }
   }
 
@@ -102,7 +81,7 @@ private:
   bool is_active_;
   icarus_driver::Icarus_Driver icarus_;
 
-  ros::Subscriber st_subscriber_, mode_subscriber_, drone_state_subscriber_;
+  ros::Subscriber mode_subscriber_, drone_state_subscriber_;
   ros::Publisher is_finished_publisher_;
   ros::NodeHandle nh_;
 
