@@ -23,8 +23,6 @@ Bocanegra::Bocanegra():
 		"/boca_negra/states", 1, &Bocanegra::statesCallback, this);
 
 	activate_client_service_ = nh_.serviceClient<boca_negra_msgs::state_change>("change_state");
-	// Este servicio hay que quitarlo
-	is_active_client_srv_ = nh_.serviceClient<boca_negra_msgs::state_change>("is_active");
 }
 
 bool
@@ -58,7 +56,7 @@ Bocanegra::activate(std::string node_name)
 	srv.request.node_name = nn;
 	srv.request.active = b;
 	if(! activate_client_service_.call(srv)){
-		ROS_ERROR("%s\n", "Ros Srvice Failed");
+		ROS_ERROR("%s\n", "Ros Service Failed");
 	}
 }
 
@@ -75,7 +73,7 @@ Bocanegra::deactivate(std::string node_name)
 	srv.request.node_name = nn;
 	srv.request.active = b;
 	if(! activate_client_service_.call(srv)){
-		ROS_ERROR("%s\n", "Ros Srvice Failed");
+		ROS_ERROR("%s\n", "Ros Service Failed");
 	}
 }
 

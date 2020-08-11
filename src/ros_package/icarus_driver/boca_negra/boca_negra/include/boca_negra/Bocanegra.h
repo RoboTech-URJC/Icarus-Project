@@ -28,7 +28,7 @@ namespace boca_negra
 
 		ros::NodeHandle nh_;
 
-		ros::ServiceClient activate_client_service_, is_active_client_srv_;
+		ros::ServiceClient activate_client_service_;
 		ros::Subscriber states_sub_;
 
 		std::vector<boca_negra_msgs::state>v_;
