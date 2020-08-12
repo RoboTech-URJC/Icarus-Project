@@ -30,7 +30,8 @@ public:
       current_mode_ = new_mode_;
       icarus_.set_mode(new_mode_);
     }else{
-      ROS_INFO("NOT Active\n");
+      current_mode_ = "";
+      new_mode_ = "";
     }
   }
 
