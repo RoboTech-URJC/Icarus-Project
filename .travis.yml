@@ -45,6 +45,7 @@ before_script:
   - if [[ -f $ROSINSTALL_FILE ]] ; then wstool merge $ROSINSTALL_FILE ; fi
   - wstool up
   - cd ~/catkin_ws
+  - rosdep install --from-paths src --ignore-src -r -y
   # - rosdep install -y --from-paths src --ignore-src --skip-keys="rocon_app_manager rocon_hub rocon_gateway rocon_gateway_utils" --rosdistro $ROS_DISTRO
 
 script:
