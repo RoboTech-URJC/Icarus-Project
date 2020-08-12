@@ -1,24 +1,20 @@
 <launch>
 
 	<!-- launch boca_negra.launch -->
+
 	<include file="$(find boca_negra)/launch/boca_negra.launch" />
 
 	<!-- launch set_mode node -->
-	<arg name="flight_mode_topic" default="/icarus_driver/flight_mode" />
-	<arg name="is_finished_topic" default="/icarus_driver/set_mode/is_finished" />
-	<arg name="drone_state_topic" default="/mavros/state" />
+
 	<arg name="arduino_port" default="/dev/ttyACM0" />
 	<arg name="baudrate" default="9600" />
 
-	<node pkg="icarus_driver" type="set_mode" name="set_mode_node" output="screen">
+	<!-- launch main Icarus Driver nodes -->
 
-		<param name="flight_mode_topic" value="$(arg flight_mode_topic)" />
-		<param name="is_finished_topic" value="$(arg is_finished_topic)" />
-		<param name="drone_state_topic" value="$(arg drone_state_topic)" />
-
-	</node>
+	<node pkg="icarus_driver" type="set_mode_node" name="set_mode_node" output="screen" />
 
 	<!-- launch ack_notifier node -->
+
 	<node pkg="icarus_driver" type="ack_notifier.py" name="ack_notifier_node" output="screen">
 		<param name="arduino_port" value="$(arg arduino_port)" />
 		<param name="baudrate" value="$(arg baudrate)" />

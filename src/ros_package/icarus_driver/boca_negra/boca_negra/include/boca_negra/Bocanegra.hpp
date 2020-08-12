@@ -20,11 +20,13 @@ namespace boca_negra
 		void activate(std::string node_name);
 		void deactivate(std::string node_name);
 
-		bool is_active();
+		bool isActive();
 
 	private:
 
 		void statesCallback(const boca_negra_msgs::states::ConstPtr msg);
+
+		bool isActive(std::string node_name);
 
 		ros::NodeHandle nh_;
 
