@@ -1,4 +1,4 @@
-# Drone Icarus [![Build Status](https://travis-ci.com/P4B5/Icarus-Project.svg?branch=master)](https://travis-ci.com/P4B5/Icarus-Project)
+# Drone Icarus [![Build Status](https://travis-ci.com/P4B5/Icarus-Project.svg?branch=update_readme)](https://travis-ci.com/P4B5/Icarus-Project)
 
 
 # Description
