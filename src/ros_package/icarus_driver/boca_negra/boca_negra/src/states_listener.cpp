@@ -1,11 +1,21 @@
-/*********************************************************************
-*  Software License Agreement (BSD License)
-*********************************************************************/
+// Copyright 2020 Robotech URJC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-/* Author: Fernando González fergonzaramos@yahoo.es  */
+/* Author: Fernando González fergonzaramos@yahoo.es */
 
 #include <string>
-#include <iterator>
+#include <vector>
 #include <ros/ros.h>
 #include "boca_negra_msgs/state_change.h"
 #include "boca_negra_msgs/state.h"
@@ -16,7 +26,6 @@
 class StListener
 {
 public:
-
   StListener()
   : nh_("~")
   {
@@ -34,14 +43,13 @@ public:
   }
 
 private:
-
   bool
   change_state(boca_negra_msgs::state_change::Request  &req,
               	boca_negra_msgs::state_change::Response &res)
   {
   	bool finish = false;
   	int i = 0;
-  	while (! finish && i < v_.size()) {
+  	while (!finish && i < v_.size()) {
   		finish = v_.at(i).node_name.data.compare(req.node_name.data) == 0;
       if (finish)
         break;
@@ -49,9 +57,9 @@ private:
   	}
 
   	boca_negra_msgs::state s;
-  	if(finish){
+  	if (finish) {
   		v_.at(i).is_active = req.active;
-  	}else{
+  	} else {
   		s.node_name = req.node_name;
   		s.is_active = req.active;
   		v_.push_back(s);
@@ -69,7 +77,6 @@ private:
   ros::ServiceServer activate_server_srv_;
 
   std::vector<boca_negra_msgs::state> v_;
-
 };
 
 int

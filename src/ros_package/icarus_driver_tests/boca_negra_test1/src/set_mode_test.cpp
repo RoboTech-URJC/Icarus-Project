@@ -23,7 +23,6 @@
 class StatesMachine : public boca_negra::Bocanegra
 {
 public:
-
 	StatesMachine()
 	: nh_("~"), state_(SETTING_MODE)
 	{
@@ -51,7 +50,6 @@ public:
 	}
 
 private:
-
 	static const int SETTING_MODE = 0;
 	static const int FINISH = 1;
 
