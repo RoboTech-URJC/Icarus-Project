@@ -56,4 +56,5 @@ script:
   - catkin_make -j 1
 #   - catkin_make $( [ -f $CATKIN_OPTIONS ] && cat $CATKIN_OPTIONS ) --only-pkg-with-deps basic_ros robots geometry_tf
   - source devel/setup.bash
+# add linter in case it's necessary
   - catkin_make run_tests && catkin_test_results
