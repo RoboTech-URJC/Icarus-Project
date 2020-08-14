@@ -18,6 +18,7 @@
 #define BOCA_NEGRA__BOCA_NEGRA_HPP_
 
 #include <string>
+#include <vector>
 #include <ros/ros.h>
 #include "boca_negra_msgs/states.h"
 #include "boca_negra_msgs/state.h"
@@ -30,13 +31,13 @@ namespace boca_negra
 	public:
 		Bocanegra();
 
+	protected:
 		void activate(std::string node_name);
 		void deactivate(std::string node_name);
 
 		bool isActive();
 
 	private:
-
 		void statesCallback(const boca_negra_msgs::states::ConstPtr msg);
 
 		bool isActive(std::string node_name);

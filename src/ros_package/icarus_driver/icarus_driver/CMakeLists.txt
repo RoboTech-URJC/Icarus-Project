@@ -120,7 +120,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include
+  include
   ${catkin_INCLUDE_DIRS}
   ${boca_negra_INCLUDE_DIRS}
 )
@@ -129,9 +129,13 @@ include_directories(
  add_library(${PROJECT_NAME}
    src/${PROJECT_NAME}/IcarusDriver.cpp
  )
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 add_executable(set_mode_node src/set_mode.cpp)
 target_link_libraries(set_mode_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+
+add_executable(arm_disarm_node src/arm_disarm.cpp)
+target_link_libraries(arm_disarm_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -154,7 +158,6 @@ target_link_libraries(set_mode_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 #############
 ## Install ##

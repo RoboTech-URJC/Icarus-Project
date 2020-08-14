@@ -86,9 +86,9 @@ Bocanegra::activate(std::string node_name)
 
 	srv.request.node_name = nn;
 	srv.request.active = b;
-	if(! activate_client_service_.call(srv)){
+
+	if (!activate_client_service_.call(srv))
 		ROS_ERROR("%s\n", "Ros Service Failed");
-	}
 }
 
 void
@@ -108,9 +108,9 @@ Bocanegra::deactivate(std::string node_name)
 
 	srv.request.node_name = nn;
 	srv.request.active = b;
-	if(! activate_client_service_.call(srv)){
+
+	if (!activate_client_service_.call(srv))
 		ROS_ERROR("%s\n", "Ros Service Failed");
-	}
 }
 
 void
@@ -118,4 +118,5 @@ Bocanegra::statesCallback(const boca_negra_msgs::states::ConstPtr msg)
 {
 	v_ = msg->array;
 }
+
 };	// namespace boca_negra

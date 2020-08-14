@@ -24,16 +24,18 @@
 namespace icarus_driver
 {
 
-Icarus_Driver::Icarus_Driver():
+IcarusDriver::IcarusDriver():
   nh_("~")
 {
   ROS_INFO("%s", "Hello World! I'm Icarus Drone");
 
+  initParams();
+  
   ack_notifier_ = nh_.advertise<std_msgs::String>("/icarus_driver/ack_notify", 1);
 }
 
 void
-Icarus_Driver::set_mode(std::string mode)
+IcarusDriver::setMode(std::string mode)
 {
   /*
    *param mode: flight mode you want to drone change
@@ -41,7 +43,7 @@ Icarus_Driver::set_mode(std::string mode)
 
   // call to ros service
 
-  ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::SetMode>("/mavros/set_mode");
+  ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::SetMode>(set_mode_srv_);
 
   mavros_msgs::SetMode setmode;
   setmode.request.custom_mode = mode;
@@ -56,11 +58,11 @@ Icarus_Driver::set_mode(std::string mode)
     ROS_INFO("%s\n", "Set mode Failed");
   }
 
-  notify_ack(msg);
+  notifyAck(msg);
 }
 
 void
-Icarus_Driver::arm_disarm(int arm)
+IcarusDriver::armDisarm(int arm)
 {
   /*
    * param arm: if 1, arm drone, if 0, disarm drone
@@ -68,43 +70,41 @@ Icarus_Driver::arm_disarm(int arm)
 
    if (arm != 0 && arm != 1) {
      ROS_ERROR("%s\n", "ERROR ARMING PARAM");
-   } else{
-     // call to ros service
-     ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::CommandBool>(
-       "/mavros/cmd/arming");
-
-     mavros_msgs::CommandBool arming;
-
-     std::string s;
-     if (arm == 1) {
-       s = "Armed";
-       arming.request.value = true;
-     } else {
-       s = "Disarmed";
-       arming.request.value = false;
-     }
-
-     std::string msg;
-     if (sc.call(arming)) {
-       msg = "c";
-       ROS_INFO("%s %s\n", s.c_str(), "Succesfully");
-     } else {
-       msg = "b";
-       ROS_ERROR("%s %s\n", s.c_str(), "Failed");
-     }
-
+     return;
    }
+   // call to ros service
+   ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::CommandBool>(arm_disarm_srv_);
+
+   mavros_msgs::CommandBool arming;
+
+   std::string s;
+   if (arm == 1) {
+     s = "Armed";
+     arming.request.value = true;
+   } else {
+     s = "Disarmed";
+     arming.request.value = false;
+   }
+
+   std::string msg;
+   if (sc.call(arming)) {
+     msg = "c";
+     ROS_INFO("%s %s\n", s.c_str(), "Succesfully");
+   } else {
+     msg = "b";
+     ROS_ERROR("%s %s\n", s.c_str(), "Failed");
+   }
+   notifyAck(msg);
 }
 
 void
-Icarus_Driver::takeoff(float lat, float lon, float alt)
+IcarusDriver::takeoff(float lat, float lon, float alt)
 {
   /*
    * params: latitude, longitude and altitude to takeoff
    */
 
-   ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::CommandTOL>(
-     "/mavros/cmd/takeoff");
+   ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::CommandTOL>(takeoff_srv_);
 
    mavros_msgs::CommandTOL take_off;
 
@@ -122,11 +122,24 @@ Icarus_Driver::takeoff(float lat, float lon, float alt)
 // PRIVATE METHODS
 
 void
-Icarus_Driver::notify_ack(std::string msg)
+IcarusDriver::notifyAck(std::string msg)
 {
   std_msgs::String m;
 
   m.data = msg;
   ack_notifier_.publish(m);
 }
+
+void
+IcarusDriver::initParams()
+{
+  set_mode_srv_ = "/mavros/set_mode";
+  arm_disarm_srv_ = "/mavros/cmd/arming";
+  takeoff_srv_ = "/mavros/cmd/takeoff";
+
+  nh_.param("set_mode_srv", set_mode_srv_, set_mode_srv_);
+  nh_.param("arm_disarm_srv", arm_disarm_srv_, arm_disarm_srv_);
+  nh_.param("takeoff_srv", takeoff_srv_, takeoff_srv_);
+}
+
 };  // namespace icarus_driver
