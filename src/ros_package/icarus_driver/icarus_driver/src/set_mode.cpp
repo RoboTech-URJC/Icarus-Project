@@ -50,7 +50,6 @@ public:
   }
 
 private:
-
   void setModeCb(const std_msgs::String::ConstPtr & msg)
   {
     new_mode_ = msg->data;
