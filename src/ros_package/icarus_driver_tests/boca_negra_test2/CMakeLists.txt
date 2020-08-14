@@ -8,6 +8,7 @@ project(boca_negra_test2)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  icarus_driver
   boca_negra
   boca_negra_msgs
   roscpp
@@ -129,6 +130,11 @@ add_library(${PROJECT_NAME}
 )
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
+add_library(${PROJECT_NAME}_using_driver
+  src/${PROJECT_NAME}/HFSM_using_driver.cpp
+)
+target_link_libraries(${PROJECT_NAME}_using_driver ${catkin_LIBRARIES})
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -139,6 +145,10 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 ## The recommended prefix ensures that target names across packages don't collide
 
 add_executable(hfsm_executor_node src/hfsm_executor.cpp)
+target_link_libraries(hfsm_executor_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+
+add_executable(hfsm_using_driver_executor_node src/hfsm_using_driver_executor.cpp)
+target_link_libraries(hfsm_using_driver_executor_node ${catkin_LIBRARIES} ${PROJECT_NAME}_using_driver)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -152,7 +162,7 @@ add_executable(hfsm_executor_node src/hfsm_executor.cpp)
 
 ## Specify libraries to link a library or executable target against
 
-target_link_libraries(hfsm_executor_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+
 
 #############
 ## Install ##
