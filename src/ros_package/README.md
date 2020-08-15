@@ -23,6 +23,7 @@ $ DONT_RUN=1 make px4_sitl_default gazebo
 ```
 Tools/gazebo_multi_vehicle.sh -n 1
 ```
+if the command above didn't work try: ``` make make px4_sitl_default gazebo```
 
 **This command will launch the simulator!**
 
