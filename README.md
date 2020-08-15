@@ -1,4 +1,4 @@
-# Drone Icarus [![Build Status](https://travis-ci.com/RoboTech-URJC/P4B5/Icarus-Project/Icarus-Project.svg?branch=update_readme)](https://travis-ci.com/P4B5/Icarus-Project/Icarus-Project)
+# Drone Icarus [![Build Status](https://travis-ci.com/RoboTech-URJC/Icarus-Project/Icarus-Project.svg?branch=update_readme)
 
 
 # Description
