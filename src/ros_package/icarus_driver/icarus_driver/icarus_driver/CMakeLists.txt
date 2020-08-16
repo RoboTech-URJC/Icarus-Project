@@ -14,7 +14,11 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
   tf2
+  tf2_ros
+  tf2_geometry_msgs
   boca_negra
+  geometry_msgs
+  icarus_driver_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -109,7 +113,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES icarus_driver
-  CATKIN_DEPENDS mavros_msgs roscpp rospy std_msgs tf tf2
+#  CATKIN_DEPENDS mavros_msgs roscpp rospy std_msgs tf2
 #  DEPENDS system_lib
 )
 
@@ -136,6 +140,9 @@ target_link_libraries(set_mode_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 add_executable(arm_disarm_node src/arm_disarm.cpp)
 target_link_libraries(arm_disarm_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+
+add_executable(mover_local_node src/mover_local.cpp)
+target_link_libraries(mover_local_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

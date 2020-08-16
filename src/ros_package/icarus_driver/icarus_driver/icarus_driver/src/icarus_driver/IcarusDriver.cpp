@@ -20,6 +20,7 @@
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/CommandTOL.h>
 #include <std_msgs/String.h>
+#include "icarus_driver_msgs/TargetPose.h"
 
 namespace icarus_driver
 {
@@ -30,7 +31,7 @@ IcarusDriver::IcarusDriver():
   ROS_INFO("%s", "Hello World! I'm Icarus Drone");
 
   initParams();
-  
+
   ack_notifier_ = nh_.advertise<std_msgs::String>("/icarus_driver/ack_notify", 1);
 }
 
@@ -98,25 +99,29 @@ IcarusDriver::armDisarm(int arm)
 }
 
 void
-IcarusDriver::takeoff(float lat, float lon, float alt)
+IcarusDriver::takeoff(double alt)
 {
   /*
    * params: latitude, longitude and altitude to takeoff
    */
 
-   ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::CommandTOL>(takeoff_srv_);
+  ros::ServiceClient sc = nh_.serviceClient<icarus_driver_msgs::TargetPose>(
+    "/icarus_driver/mover_local_srv");
 
-   mavros_msgs::CommandTOL take_off;
+  icarus_driver_msgs::TargetPose take_off;
+  geometry_msgs::PoseStamped target_pose;
+  
+  target_pose.header.frame_id = "base_link";
+  target_pose.header.stamp = ros::Time::now();
+  target_pose.pose.position.z = alt;
 
-   take_off.request.latitude = lat;
-   take_off.request.longitude = lon;
-   take_off.request.altitude = alt;
+  take_off.request.target_pose = target_pose;
 
-   if (sc.call(take_off)) {
-     ROS_INFO("%s", "Take Off Succesfully");
-   } else {
-     ROS_ERROR("%s","take Off Failed");
-   }
+  if (sc.call(take_off)) {
+   ROS_INFO("%s", "Take Off Succesfully");
+  } else {
+   ROS_ERROR("%s","take Off Failed");
+  }
 }
 
 // PRIVATE METHODS
@@ -135,11 +140,13 @@ IcarusDriver::initParams()
 {
   set_mode_srv_ = "/mavros/set_mode";
   arm_disarm_srv_ = "/mavros/cmd/arming";
-  takeoff_srv_ = "/mavros/cmd/takeoff";
+  local_pose_topic_ = "/mavros/local_position/pose";
+  local_pose_setter_topic_ = "/mavros/setpoint_position/local";
 
   nh_.param("set_mode_srv", set_mode_srv_, set_mode_srv_);
   nh_.param("arm_disarm_srv", arm_disarm_srv_, arm_disarm_srv_);
-  nh_.param("takeoff_srv", takeoff_srv_, takeoff_srv_);
+  nh_.param("local_pose_topic", local_pose_topic_, local_pose_topic_);
+  nh_.param("local_pose_setter_topic", local_pose_setter_topic_, local_pose_setter_topic_);
 }
 
 };  // namespace icarus_driver

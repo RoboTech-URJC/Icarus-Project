@@ -28,7 +28,7 @@ HFSM::HFSM()
 {
 	initParams();
 	target_altitude_ = 3.0;
-	target_x_ = 5.0;
+	target_x_ = 3.0;
 	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &HFSM::droneStateCb, this);
 	altitude_sub_ = nh_.subscribe(altitude_topic_, 1, &HFSM::altitudeCb, this);
 	local_pos_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(local_pos_topic_, 1);
@@ -136,6 +136,8 @@ void
 HFSM::takeoffCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Takeoff");
+	activate("mover_local_node");
+	takeoff(target_altitude_);
 	setMode("OFFBOARD");
 }
 
@@ -143,7 +145,7 @@ void
 HFSM::takeoffCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Takeoff");
-
+	/*
 	geometry_msgs::PoseStamped tgt_pose;
 	tgt_pose.header.stamp = ros::Time::now();
 	tgt_pose.header.frame_id = "base_link";
@@ -151,12 +153,14 @@ HFSM::takeoffCodeIterative()
 	tgt_pose.pose.position.z = target_altitude_;
 
 	local_pos_pub_.publish(tgt_pose);
+	*/
 }
 
 void
 HFSM::forwardCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Forward");
+	deactivate("mover_local_node");
 }
 
 void
