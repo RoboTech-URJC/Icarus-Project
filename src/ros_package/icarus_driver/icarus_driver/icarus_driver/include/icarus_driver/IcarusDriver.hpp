@@ -30,7 +30,7 @@ namespace icarus_driver
 
     void setMode(std::string mode);
     void armDisarm(int arm);
-    void takeoff(float lat, float lon, float alt);
+    void takeoff(double alt);
 
   private:
     void initParams();
@@ -40,7 +40,10 @@ namespace icarus_driver
 
 
     ros::Publisher ack_notifier_;
-    std::string set_mode_srv_, arm_disarm_srv_, takeoff_srv_;
+
+  protected:
+    std::string set_mode_srv_, arm_disarm_srv_, takeoff_srv_, local_pose_topic_,
+      local_pose_setter_topic_;
   };
 };  //namespace icarus_driver
 
