@@ -14,7 +14,7 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#include "boca_negra_test2/HFSM.hpp"
+#include "boca_negra_test2/HFSM_using_driver.hpp"
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
 
@@ -24,7 +24,7 @@
 namespace boca_negra_test2
 {
 
-HFSM::HFSM()
+HFSMDriver::HFSMDriver()
 :	boca_negra::Bocanegra(), nh_("~"), state_(INIT), code_once_executed_(false),
 	takeoff_mode_("AUTO.TAKEOFF"), land_mode_("AUTO.LAND")
 {
@@ -34,14 +34,12 @@ HFSM::HFSM()
 	is_armed_ = false;
 	initParams();
 
-	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &HFSM::droneStateCb, this);
-	local_pose_sub_ = nh_.subscribe(local_pose_topic_, 1, &HFSM::localPoseCb, this);
-	set_mode_pub_ = nh_.advertise<std_msgs::String>("/icarus_driver/set_mode", 1);
-	arm_disarm_pub_ = nh_.advertise<std_msgs::Bool>("/icarus_driver/arm_disarm", 1);
+	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &HFSMDriver::droneStateCb, this);
+	local_pose_sub_ = nh_.subscribe(local_pose_topic_, 1, &HFSMDriver::localPoseCb, this);
 }
 
 void
-HFSM::step()
+HFSMDriver::step()
 {
 	switch (state_) {
 		case INIT:
@@ -117,20 +115,20 @@ HFSM::step()
 }
 
 void
-HFSM::droneStateCb(const mavros_msgs::State::ConstPtr & msg)
+HFSMDriver::droneStateCb(const mavros_msgs::State::ConstPtr & msg)
 {
 	drone_mode_ = msg->mode;
 	is_armed_ = msg->armed;
 }
 
 void
-HFSM::localPoseCb(const geometry_msgs::PoseStamped::ConstPtr & msg)
+HFSMDriver::localPoseCb(const geometry_msgs::PoseStamped::ConstPtr & msg)
 {
 	altitude_ = msg->pose.position.z;
 }
 
 void
-HFSM::initParams()
+HFSMDriver::initParams()
 {
 	// Get params from launch
 	drone_state_topic_ = "/mavros/state";
@@ -141,105 +139,90 @@ HFSM::initParams()
 }
 
 void
-HFSM::initCodeOnce()
+HFSMDriver::initCodeOnce()
 {
 	ROS_WARN("%s\n", "HFSM Begins!\n");
-	deactivate("arm_disarm_node");
 }
 
 void
-HFSM::setModeTakeoffCodeOnce()
+HFSMDriver::setModeTakeoffCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Set Mode Takeoff");
-	activate("set_mode_node");
+	setMode(takeoff_mode_);
+	//activate("set_mode_node");
 }
 
 void
-HFSM::setModeTakeoffCodeIterative()
+HFSMDriver::setModeTakeoffCodeIterative()
 {
 	ROS_INFO("[%s] Code Iterative\n", "Set Mode Takeoff");
-	std_msgs::String msg;
-	msg.data = takeoff_mode_;
-	set_mode_pub_.publish(msg);
 }
 
 void
-HFSM::armCodeOnce()
+HFSMDriver::armCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Arm");
-	deactivate("set_mode_node");
-	activate("arm_disarm_node");
+	armDisarm(1);
 }
 
 void
-HFSM::armCodeIterative()
+HFSMDriver::armCodeIterative()
 {
 	ROS_INFO("[%s] Code Iterative\n", "Arm");
-	std_msgs::Bool msg;
-	msg.data = true;
-	arm_disarm_pub_.publish(msg);
 }
 
 void
-HFSM::setModeLandCodeOnce()
+HFSMDriver::setModeLandCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Set Mode Land");
-	deactivate("arm_disarm_node");
-	activate("set_mode_node");
+	setMode(land_mode_);
 }
 
 void
-HFSM::setModeLandCodeIterative()
+HFSMDriver::setModeLandCodeIterative()
 {
 	ROS_INFO("[%s] Code Iterative\n", "Set Mode Land");
-	std_msgs::String msg;
-	msg.data = land_mode_;
-	set_mode_pub_.publish(msg);
 }
 
 void
-HFSM::disarmCodeOnce()
+HFSMDriver::disarmCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Disarm");
-	deactivate("set_mode_node");
-	activate("arm_disarm_node");
+	armDisarm(0);
 }
 
 void
-HFSM::disarmCodeIterative()
+HFSMDriver::disarmCodeIterative()
 {
 	ROS_INFO("[%s] Code Iterative\n", "Disarm");
-	std_msgs::Bool msg;
-	msg.data = false;
-	arm_disarm_pub_.publish(msg);
 }
 
 bool
-HFSM::init2setModeTakeoff()
+HFSMDriver::init2setModeTakeoff()
 {
 	return true;
 }
 
 bool
-HFSM::setModeTakeoff2arm()
+HFSMDriver::setModeTakeoff2arm()
 {
 	return drone_mode_ == takeoff_mode_;
 }
 
 bool
-HFSM::arm2setModeLand()
+HFSMDriver::arm2setModeLand()
 {
 	return altitude_ >= MAXALTITUDE;
 }
 
 bool
-HFSM::setModeLand2disarm()
+HFSMDriver::setModeLand2disarm()
 {
 	return altitude_ <= MINALTITUDE;
 }
 
 bool
-HFSM::disarm2init()
+HFSMDriver::disarm2init()
 {
 	return !is_armed_;
 }

@@ -14,22 +14,23 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#ifndef BOCA_NEGRA_TEST2__HFSM_HPP_
-#define BOCA_NEGRA_TEST2__HFSM_HPP_
+#ifndef BOCA_NEGRA_TEST2__HFSM_USING_DRIVER_HPP_
+#define BOCA_NEGRA_TEST2__HFSM_USING_DRIVER_HPP_
 
 #include <string>
 #include <ros/ros.h>
 #include <mavros_msgs/State.h>
 #include <geometry_msgs/PoseStamped.h>
 #include "boca_negra/Bocanegra.hpp"
+#include "icarus_driver/IcarusDriver.hpp"
 
 namespace boca_negra_test2
 {
 
-class HFSM : public boca_negra::Bocanegra
+class HFSMDriver : public boca_negra::Bocanegra, icarus_driver::IcarusDriver
 {
 public:
-	HFSM();
+	HFSMDriver();
 
 	void step();
 
@@ -71,7 +72,6 @@ private:
 	static const int FINISH = 5;
 
 	ros::NodeHandle nh_;
-	ros::Publisher set_mode_pub_, arm_disarm_pub_;
 	ros::Subscriber drone_state_sub_, local_pose_sub_;
 
 	int state_;
@@ -83,4 +83,4 @@ private:
 
 };	//namespace boca_negra_test2
 
-#endif	// BOCA_NEGRA_TEST2__HFSM_HPP_
+#endif	// BOCA_NEGRA_TEST2__HFSM_USING_DRIVER_HPP_

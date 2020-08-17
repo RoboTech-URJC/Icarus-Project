@@ -14,43 +14,38 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#ifndef BOCA_NEGRA__BOCA_NEGRA_HPP_
-#define BOCA_NEGRA__BOCA_NEGRA_HPP_
+#ifndef ICARUS_DRIVER__ICARUS_DRIVER_HPP_
+#define ICARUS_DRIVER__ICARUS_DRIVER_HPP_
 
 #include <string>
-#include <vector>
 #include <ros/ros.h>
-#include "boca_negra_msgs/states.h"
-#include "boca_negra_msgs/state.h"
 
-namespace boca_negra
+namespace icarus_driver
 {
-	class Bocanegra
-	{
+  class IcarusDriver
+  {
 
-	public:
-		Bocanegra();
+  public:
+    IcarusDriver();
 
-	protected:
-		void activate(std::string node_name);
-		void deactivate(std::string node_name);
+    void setMode(std::string mode);
+    void armDisarm(int arm);
+    void takeoff(double alt);
+    void moveLocalTo(double x, double y, double z);
 
-		bool isActive();
+  private:
+    void initParams();
+    void notifyAck(std::string msg);  // notify if last command wass succesfully or not
 
-	private:
-		void statesCallback(const boca_negra_msgs::states::ConstPtr msg);
+    ros::NodeHandle nh_;
 
-		bool isActive(std::string node_name);
 
-		ros::NodeHandle nh_;
+    ros::Publisher ack_notifier_;
 
-		ros::ServiceClient activate_client_service_;
-		ros::Subscriber states_sub_;
+  protected:
+    std::string set_mode_srv_, arm_disarm_srv_, takeoff_srv_, local_pose_topic_,
+      local_pose_setter_topic_;
+  };
+};  //namespace icarus_driver
 
-		std::vector<boca_negra_msgs::state>v_;
-		std::string this_node_;
-
-	};
-};	//namespace boca_negra
-
-#endif	// BOCA_NEGRA__BOCA_NEGRA_HPP_
+#endif  // ICARUS_DRIVER__ICARUS_DRIVER_HPP_

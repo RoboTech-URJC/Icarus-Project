@@ -1,0 +1,46 @@
+<launch>
+
+	<!-- launch boca_negra.launch -->
+
+	<include file="$(find boca_negra)/launch/boca_negra.launch" />
+
+	<!-- ack_notifier Node Params -->
+
+	<arg name="arduino_port" default="/dev/ttyACM0" />
+	<arg name="baudrate" default="9600" />
+
+	<!-- Main Params -->
+
+	<arg name="set_mode_srv" default="/mavros/set_mode" />
+	<arg name="arm_disarm_srv" default="/mavros/cmd/arming" />
+	<arg name="local_pose_topic" default="/mavros/local_position/pose" />
+	<arg name="local_pose_setter_topic" default="/mavros/setpoint_position/local" />
+
+	<!-- launch main Icarus Driver nodes -->
+
+	<node pkg="icarus_driver" type="mover_local_node" name="mover_local_node" output="screen">
+		<param name="local_pose_topic" value="$(arg local_pose_topic)" />
+		<param name="local_pose_setter_topic" value="$(arg local_pose_setter_topic)" />
+	</node>
+
+	<!--
+	<node pkg="icarus_driver" type="set_mode_node" name="set_mode_node" output="screen">
+		<param name="set_mode_srv" value="$(arg set_mode_srv)" />
+		<param name="arm_disarm_srv" value="$(arg arm_disarm_srv)" />
+		<param name="takeoff_srv" value="$(arg takeoff_srv)" />
+	</node>
+
+	<node pkg="icarus_driver" type="arm_disarm_node" name="arm_disarm_node" output="screen">
+		<param name="set_mode_srv" value="$(arg set_mode_srv)" />
+		<param name="arm_disarm_srv" value="$(arg arm_disarm_srv)" />
+		<param name="takeoff_srv" value="$(arg takeoff_srv)" />
+	</node>
+	-->
+	<!-- launch ack_notifier node -->
+
+	<node pkg="icarus_driver" type="ack_notifier.py" name="ack_notifier_node" output="screen">
+		<param name="arduino_port" value="$(arg arduino_port)" />
+		<param name="baudrate" value="$(arg baudrate)" />
+	</node>
+
+</launch>

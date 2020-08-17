@@ -14,32 +14,22 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#ifndef ICARUS_DRIVER__ICARUS_DRIVER_HPP_
-#define ICARUS_DRIVER__ICARUS_DRIVER_HPP_
-
-#include <string>
 #include <ros/ros.h>
+#include "boca_negra_test2/HFSM.hpp"
 
-namespace icarus_driver
+int
+main(int argc, char **argv)
 {
-  class Icarus_Driver
-  {
+	ros::init(argc, argv, "hfsm_executor_node");
 
-  public:
-    Icarus_Driver();
+	boca_negra_test2::HFSM hfsm_executor;
 
-    void set_mode(std::string mode);
-    void arm_disarm(int arm);
-    void takeoff(float lat, float lon, float alt);
-
-  private:
-
-    void notify_ack(std::string msg);  // notify if last command wass succesfully or not
-
-    ros::NodeHandle nh_;
-    ros::Publisher ack_notifier_;
-
-  };
-};  //namespace icarus_driver
-
-#endif  // ICARUS_DRIVER__ICARUS_DRIVER_HPP_
+	ros::Rate loop_rate(5);
+	while (ros::ok()) {
+		hfsm_executor.step();
+		ros::spinOnce();
+		loop_rate.sleep();
+	}
+	
+	return 0;
+}

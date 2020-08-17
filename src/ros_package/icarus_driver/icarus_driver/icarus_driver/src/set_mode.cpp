@@ -22,16 +22,16 @@
 
 #define HZ 5
 
-class Executor : public boca_negra::Bocanegra
+class SetMode : public boca_negra::Bocanegra
 {
 public:
-  Executor()
+  SetMode()
   : boca_negra::Bocanegra(), nh_("~"), set_mode_topic_("/icarus_driver/set_mode")
   {
     current_mode_ = "";
     new_mode_ = "";
 
-    set_mode_sub_ = nh_.subscribe(set_mode_topic_, 1, &Executor::setModeCb, this);
+    set_mode_sub_ = nh_.subscribe(set_mode_topic_, 1, &SetMode::setModeCb, this);
   }
 
   void
@@ -42,7 +42,7 @@ public:
         return;
 
       current_mode_ = new_mode_;
-      icarus_.set_mode(new_mode_);
+      icarus_.setMode(new_mode_);
     }else{
       current_mode_ = "";
       new_mode_ = "";
@@ -50,7 +50,6 @@ public:
   }
 
 private:
-
   void setModeCb(const std_msgs::String::ConstPtr & msg)
   {
     new_mode_ = msg->data;
@@ -59,7 +58,7 @@ private:
   ros::NodeHandle nh_;
 
   std::string set_mode_topic_, current_mode_, new_mode_;
-  icarus_driver::Icarus_Driver icarus_;
+  icarus_driver::IcarusDriver icarus_;
   ros::Subscriber set_mode_sub_;
 };
 
@@ -67,11 +66,11 @@ int
 main(int argc, char **argv)
 {
   ros::init(argc, argv, "set_mode_node");
-  Executor executor;
+  SetMode set_mode;
 
   ros::Rate rate = HZ;
   while(ros::ok()){
-    executor.update();
+    set_mode.update();
     ros::spinOnce();
     rate.sleep();
   }
