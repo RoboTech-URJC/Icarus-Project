@@ -23,12 +23,13 @@ $ DONT_RUN=1 make px4_sitl_default gazebo
 ```
 Tools/gazebo_multi_vehicle.sh -n 1
 ```
+- ATENTION: if the command above didn't work just try: ``` make px4_sitl_default gazebo```
 
 **This command will launch the simulator!**
 
 but...
 
-To be able to communicate the messages we send to ros topics or services, for example, since our c++ programs, it is necessary to run the netxt launch:
+To be able to communicate the messages we send to ros topics or services, for example, since our c++ programs, it is necessary to run the next launch:
 
 ```
 $ roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"
