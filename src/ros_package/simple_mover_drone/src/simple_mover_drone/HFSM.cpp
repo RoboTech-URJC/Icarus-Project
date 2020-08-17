@@ -24,13 +24,14 @@ HFSM::HFSM()
 : icarus_driver::IcarusDriver(),
 	nh_(""),
 	state_(INIT),
-	code_once_executed_(false)
+	code_once_executed_(false),
+	mover_local_finished_(false)
 {
 	initParams();
 	target_altitude_ = 3.0;
 	target_x_ = 3.0;
 	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &HFSM::droneStateCb, this);
-	altitude_sub_ = nh_.subscribe(altitude_topic_, 1, &HFSM::altitudeCb, this);
+	mover_local_sub_ = nh_.subscribe("/icarus_driver/mover_local/finished", 1, &HFSM::moverLocalCb, this);
 	local_pos_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(local_pos_topic_, 1);
 }
 
@@ -87,6 +88,7 @@ HFSM::step()
 			if (forward2turn()) {
 				code_once_executed_ = false;
 				state_ = TURN;
+				ROS_WARN("FINISHED!");
 			}
 			break;
 
@@ -100,11 +102,9 @@ HFSM::initParams()
 {
 	drone_state_topic_ = "/mavros/state";
 	local_pos_topic_ = "/mavros/setpoint_position/local";
-	altitude_topic_ = "/mavros/altitude";
 
 	nh_.param("drone_state_topic", drone_state_topic_, drone_state_topic_);
 	nh_.param("local_pos_topic", local_pos_topic_, local_pos_topic_);
-	nh_.param("altitude_topic", altitude_topic_, altitude_topic_);
 }
 
 void
@@ -114,15 +114,16 @@ HFSM::droneStateCb(const mavros_msgs::State::ConstPtr & msg)
 }
 
 void
-HFSM::altitudeCb(const mavros_msgs::Altitude::ConstPtr & msg)
+HFSM::moverLocalCb(const std_msgs::Empty & msg)
 {
-	current_altitude_ = msg ->local;
+	mover_local_finished_ = true;
 }
 
 void
 HFSM::initCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Init");
+	setMode("OFFBOARD");
 }
 
 void
@@ -160,14 +161,15 @@ void
 HFSM::forwardCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Forward");
-	deactivate("mover_local_node");
+	//deactivate("mover_local_node");
+	moveLocalTo(target_x_, 0.0, 0.0);
 }
 
 void
 HFSM::forwardCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Forward");
-
+	/*
 	geometry_msgs::PoseStamped tgt_pose;
 	tgt_pose.header.stamp = ros::Time::now();
 	tgt_pose.header.frame_id = "base_link";
@@ -176,6 +178,7 @@ HFSM::forwardCodeIterative()
 	tgt_pose.pose.position.z = target_altitude_;
 
 	local_pos_pub_.publish(tgt_pose);
+	*/
 }
 
 bool
@@ -193,6 +196,21 @@ HFSM::arm2takeoff()
 bool
 HFSM::takeoff2forward()
 {
-	return abs(current_altitude_ - target_altitude_) < 0.15;
+	if (mover_local_finished_) {
+		mover_local_finished_ = false;
+		return true;
+	}
+	return false;
 }
+
+bool
+HFSM::forward2turn()
+{
+	if (mover_local_finished_) {
+		mover_local_finished_ = false;
+		return true;
+	}
+	return false;
+}
+
 };	// namespace simple_mover_drone

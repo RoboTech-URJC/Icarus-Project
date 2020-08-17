@@ -21,6 +21,7 @@
 #include <ros/ros.h>
 #include <mavros_msgs/State.h>
 #include <mavros_msgs/Altitude.h>
+#include <std_msgs/Empty.h>
 #include "boca_negra/Bocanegra.hpp"
 #include "icarus_driver/IcarusDriver.hpp"
 
@@ -36,7 +37,7 @@ public:
 private:
 	void initParams();
 	void droneStateCb(const mavros_msgs::State::ConstPtr & msg);
-	void altitudeCb(const mavros_msgs::Altitude::ConstPtr & msg);
+	void moverLocalCb(const std_msgs::Empty & msg);
 
 	/* -------------- */
 
@@ -52,26 +53,29 @@ private:
 	void forwardCodeOnce();
 	void forwardCodeIterative();
 
+	void turnCodeOnce(){}
+	void turnCodeIterative(){}
+
 	bool init2arm();
 	bool arm2takeoff();
 	bool takeoff2forward();
-	bool forward2turn(){return false;}
+	bool forward2turn();
 
 	static const int INIT = 0;
 	static const int ARM = 1;
 	static const int TAKEOFF = 2;
 	static const int FORWARD = 3;
-	static const int TURN = 3;
+	static const int TURN = 4;
 
 	ros::NodeHandle nh_;
-	ros::Subscriber drone_state_sub_, altitude_sub_;
+	ros::Subscriber drone_state_sub_, altitude_sub_, mover_local_sub_;
 	ros::Publisher local_pos_pub_;
 
 	int state_;
 	double target_altitude_, target_x_, target_angle;
 	float current_altitude_;
-	bool code_once_executed_;
-	std::string drone_state_topic_, local_pos_topic_, altitude_topic_;
+	bool code_once_executed_, mover_local_finished_;
+	std::string drone_state_topic_, local_pos_topic_;
 	mavros_msgs::State drone_state_;
 };
 };	// namespace simple_mover_drone

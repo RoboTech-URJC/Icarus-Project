@@ -28,14 +28,15 @@
 #include "boca_negra/Bocanegra.hpp"
 
 #define HZ 10
-#define POSITION_MARGIN_ERROR 0.15
+#define POSITION_MARGIN_ERROR 0.1
 #define ORIENTATION_MARGIN_ERROR 0.05
 
 class MoverLocal : public icarus_driver::IcarusDriver, boca_negra::Bocanegra
 {
 public:
 	MoverLocal()
-	:	IcarusDriver(), Bocanegra(), nh_("~"), tf_listener_(tf_buffer_)
+	:	IcarusDriver(), Bocanegra(), nh_("~"), tf_listener_(tf_buffer_),
+		finished_published_(false)
 
 	{
 		local_pose_sub_ = nh_.subscribe(local_pose_topic_, 1, &MoverLocal::localPoseCb, this);
@@ -56,7 +57,9 @@ public:
 
 		std_msgs::Empty msg;
 		if (localTargetReached()) {
-			finish_trigger_pub_.publish(msg);
+			if (!finished_published_)
+				finish_trigger_pub_.publish(msg);
+			finished_published_ = true;
 		} else {
 			target_pos_.header.stamp = ros::Time::now();
 			mavros_local_pose_pub_.publish(target_pos_);
@@ -68,7 +71,8 @@ private:
 	moveToLocalPose(icarus_driver_msgs::TargetPose::Request & req,
 		icarus_driver_msgs::TargetPose::Response & res)
 	{
-		ROS_WARN("RECEIVED!");
+		finished_published_ = false;
+
 		std::string error;
 		geometry_msgs::TransformStamped src_frame2map;
 
@@ -101,7 +105,7 @@ private:
 	orientationReached()
 	{
 		// Mirar que pasa si es nan
-		
+
 		double t_roll, t_pitch, t_yaw;
 		double c_roll, c_pitch, c_yaw;
 
@@ -144,6 +148,8 @@ private:
 	tf2_ros::TransformListener tf_listener_;
 
 	geometry_msgs::PoseStamped current_pos_, target_pos_;
+
+	bool finished_published_;
 };
 
 int
