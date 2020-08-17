@@ -110,10 +110,17 @@ IcarusDriver::takeoff(double alt)
 
   icarus_driver_msgs::TargetPose take_off;
   geometry_msgs::PoseStamped target_pose;
-  
+
   target_pose.header.frame_id = "base_link";
   target_pose.header.stamp = ros::Time::now();
+  target_pose.pose.position.x = 0.0;
+  target_pose.pose.position.y = 0.0;
   target_pose.pose.position.z = alt;
+
+  target_pose.pose.orientation.x = 0.0;
+  target_pose.pose.orientation.y = 0.0;
+  target_pose.pose.orientation.z = 0.0;
+  target_pose.pose.orientation.w = 1.0;
 
   take_off.request.target_pose = target_pose;
 
@@ -121,6 +128,39 @@ IcarusDriver::takeoff(double alt)
    ROS_INFO("%s", "Take Off Succesfully");
   } else {
    ROS_ERROR("%s","take Off Failed");
+  }
+}
+
+void
+IcarusDriver::moveLocalTo(double x, double y, double z)
+{
+  /*
+   * params: latitude, longitude and altitude to takeoff
+   */
+
+  ros::ServiceClient sc = nh_.serviceClient<icarus_driver_msgs::TargetPose>(
+    "/icarus_driver/mover_local_srv");
+
+  icarus_driver_msgs::TargetPose move_to;
+  geometry_msgs::PoseStamped target_pose;
+
+  target_pose.header.frame_id = "base_link";
+  target_pose.header.stamp = ros::Time::now();
+  target_pose.pose.position.x = x;
+  target_pose.pose.position.y = y;
+  target_pose.pose.position.z = z;
+
+  target_pose.pose.orientation.x = 0.0;
+  target_pose.pose.orientation.y = 0.0;
+  target_pose.pose.orientation.z = 0.0;
+  target_pose.pose.orientation.w = 1.0;
+
+  move_to.request.target_pose = target_pose;
+
+  if (sc.call(move_to)) {
+   ROS_INFO("%s", "Move To Pose Succesfully");
+  } else {
+   ROS_ERROR("%s","Move To Pose Failed");
   }
 }
 

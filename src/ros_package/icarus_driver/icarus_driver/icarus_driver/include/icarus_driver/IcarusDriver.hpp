@@ -31,6 +31,7 @@ namespace icarus_driver
     void setMode(std::string mode);
     void armDisarm(int arm);
     void takeoff(double alt);
+    void moveLocalTo(double x, double y, double z);
 
   private:
     void initParams();
