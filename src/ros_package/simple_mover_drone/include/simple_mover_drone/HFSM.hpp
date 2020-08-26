@@ -53,13 +53,14 @@ private:
 	void forwardCodeOnce();
 	void forwardCodeIterative();
 
-	void turnCodeOnce(){}
-	void turnCodeIterative(){}
+	void turnCodeOnce();
+	void turnCodeIterative();
 
 	bool init2arm();
 	bool arm2takeoff();
 	bool takeoff2forward();
 	bool forward2turn();
+	bool turn2finish();
 
 	static const int INIT = 0;
 	static const int ARM = 1;

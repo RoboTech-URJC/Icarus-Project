@@ -28,8 +28,8 @@
 #include "boca_negra/Bocanegra.hpp"
 
 #define HZ 10
-#define POSITION_MARGIN_ERROR 0.1
-#define ORIENTATION_MARGIN_ERROR 0.05
+#define POSITION_MARGIN_ERROR 0.15
+#define ORIENTATION_MARGIN_ERROR 0.02
 
 class MoverLocal : public icarus_driver::IcarusDriver, boca_negra::Bocanegra
 {
