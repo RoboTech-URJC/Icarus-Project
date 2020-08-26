@@ -16,6 +16,7 @@
 
 #include "icarus_driver/IcarusDriver.hpp"
 #include <ros/ros.h>
+#include "tf/transform_datatypes.h"
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/CommandTOL.h>
@@ -154,6 +155,39 @@ IcarusDriver::moveLocalTo(double x, double y, double z)
   target_pose.pose.orientation.y = 0.0;
   target_pose.pose.orientation.z = 0.0;
   target_pose.pose.orientation.w = 1.0;
+
+  move_to.request.target_pose = target_pose;
+
+  if (sc.call(move_to)) {
+   ROS_INFO("%s", "Move To Pose Succesfully");
+  } else {
+   ROS_ERROR("%s","Move To Pose Failed");
+  }
+}
+
+void
+IcarusDriver::turnLocalTo(double roll, double pitch, double yaw)
+{
+  /*
+   * params: latitude, longitude and altitude to takeoff
+   */
+
+  ros::ServiceClient sc = nh_.serviceClient<icarus_driver_msgs::TargetPose>(
+    "/icarus_driver/mover_local_srv");
+
+  icarus_driver_msgs::TargetPose move_to;
+  geometry_msgs::PoseStamped target_pose;
+
+  target_pose.header.frame_id = "base_link";
+  target_pose.header.stamp = ros::Time::now();
+  target_pose.pose.position.x = 0.0;
+  target_pose.pose.position.y = 0.0;
+  target_pose.pose.position.z = 0.0;
+
+  // Create Quaternion from RPY angle
+
+  target_pose.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(
+    roll, pitch, yaw);
 
   move_to.request.target_pose = target_pose;
 

@@ -88,7 +88,19 @@ HFSM::step()
 			if (forward2turn()) {
 				code_once_executed_ = false;
 				state_ = TURN;
-				ROS_WARN("FINISHED!");
+			}
+			break;
+
+		case TURN:
+			if (!code_once_executed_) {
+				turnCodeOnce();
+				code_once_executed_ = true;
+			}
+			turnCodeIterative();
+
+			if (turn2finish()) {
+				code_once_executed_ = false;
+				state_ = FORWARD;
 			}
 			break;
 
@@ -146,22 +158,12 @@ void
 HFSM::takeoffCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Takeoff");
-	/*
-	geometry_msgs::PoseStamped tgt_pose;
-	tgt_pose.header.stamp = ros::Time::now();
-	tgt_pose.header.frame_id = "base_link";
-
-	tgt_pose.pose.position.z = target_altitude_;
-
-	local_pos_pub_.publish(tgt_pose);
-	*/
 }
 
 void
 HFSM::forwardCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Forward");
-	//deactivate("mover_local_node");
 	moveLocalTo(target_x_, 0.0, 0.0);
 }
 
@@ -169,16 +171,22 @@ void
 HFSM::forwardCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Forward");
-	/*
-	geometry_msgs::PoseStamped tgt_pose;
-	tgt_pose.header.stamp = ros::Time::now();
-	tgt_pose.header.frame_id = "base_link";
+}
 
-	tgt_pose.pose.position.x = target_x_;
-	tgt_pose.pose.position.z = target_altitude_;
+void
+HFSM::turnCodeOnce()
+{
+	ROS_WARN("State [%s]\n", "Turn");
 
-	local_pos_pub_.publish(tgt_pose);
-	*/
+	// Turn Pi/2:
+
+	turnLocalTo(0.0, 0.0, 3.1416 / 2.0);
+}
+
+void
+HFSM::turnCodeIterative()
+{
+	ROS_INFO("State [%s] Code Iterative\n", "Turn");
 }
 
 bool
@@ -205,6 +213,16 @@ HFSM::takeoff2forward()
 
 bool
 HFSM::forward2turn()
+{
+	if (mover_local_finished_) {
+		mover_local_finished_ = false;
+		return true;
+	}
+	return false;
+}
+
+bool
+HFSM::turn2finish()
 {
 	if (mover_local_finished_) {
 		mover_local_finished_ = false;

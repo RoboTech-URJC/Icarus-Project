@@ -32,6 +32,7 @@ namespace icarus_driver
     void armDisarm(int arm);
     void takeoff(double alt);
     void moveLocalTo(double x, double y, double z);
+    void turnLocalTo(double roll, double pitch, double yaw);
 
   private:
     void initParams();
