@@ -18,12 +18,13 @@ Now, you can go back to your *catkin_make/* directory and compile all packages t
 ```
 $ DONT_RUN=1 make px4_sitl_default gazebo
 ```
+:warning: CAUTION: if the command above didn't work just try: ``` make px4_sitl_default gazebo```
+
 **3.** Once everything is compiled, go to *Firmware* folder and run:
 
 ```
 Tools/gazebo_multi_vehicle.sh -n 1
 ```
-- ATENTION: if the command above didn't work just try: ``` make px4_sitl_default gazebo```
 
 **This command will launch the simulator!**
 
@@ -34,7 +35,14 @@ To be able to communicate the messages we send to ros topics or services, for ex
 ```
 $ roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"
 ```
-
 This is the launch file located inside the *mavros* package previously installed, but, we run it with a new parameter to indicates the access point where simulator is listenning.
+
+:warning:CAUTION: if the laucher above didn't work properly follow you probably need to follow the next steps:
+
+ 1. install geographiclib-tools: `sudo apt-get install geographiclib-tools`
+ 2. go to: `cd [your ws]/mavros/mavros/scripts` and run `sudo ./install_geographiclib_datasets.sh`
+
+
+
 
 At this moment, you can send commands to the simulated drone using ros topics or services.
