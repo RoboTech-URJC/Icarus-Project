@@ -29,7 +29,7 @@
 
 #define HZ 10
 #define POSITION_MARGIN_ERROR 0.15
-#define ORIENTATION_MARGIN_ERROR 0.02
+#define ORIENTATION_MARGIN_ERROR 0.035
 
 class MoverLocal : public icarus_driver::IcarusDriver, boca_negra::Bocanegra
 {
