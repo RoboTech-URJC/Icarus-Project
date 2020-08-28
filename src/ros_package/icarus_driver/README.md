@@ -21,5 +21,5 @@ Bocanegra is a state machine conceived specially for this project and adressed t
 <!-- <img src="/home/pabloc/Desktop/Github/Icarus-Project/docs/diagram.png" width="600" height="400" > -->
 
 <p align="center">
-  <img width="460" height="300" src="/home/pabloc/Desktop/Github/Icarus-Project/docs/diagram.png">
+  <img width="460" height="300" src="RoboTech-URJC/Icarus-Project/docs/diagram.png">
 </p>
