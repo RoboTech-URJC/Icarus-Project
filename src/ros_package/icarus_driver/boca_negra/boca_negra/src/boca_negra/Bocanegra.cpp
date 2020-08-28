@@ -73,7 +73,7 @@ Bocanegra::isActive(std::string node_name)
 void
 Bocanegra::activate(std::string node_name)
 {
-	if (isActive(node_name) )
+	if (isActive(node_name))
 		return;
 	ROS_WARN("Activating [%s] node\n", node_name.c_str());
 
@@ -88,7 +88,7 @@ Bocanegra::activate(std::string node_name)
 	srv.request.active = b;
 
 	if (!activate_client_service_.call(srv))
-		ROS_ERROR("%s\n", "Ros Service Failed");
+		ROS_ERROR("%s\n", "ROS Service Failed");
 }
 
 void
@@ -110,7 +110,7 @@ Bocanegra::deactivate(std::string node_name)
 	srv.request.active = b;
 
 	if (!activate_client_service_.call(srv))
-		ROS_ERROR("%s\n", "Ros Service Failed");
+		ROS_ERROR("%s\n", "ROS Service Failed");
 }
 
 void
