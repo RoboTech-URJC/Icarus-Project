@@ -8,7 +8,7 @@
 | set mode  | set the mode you want to operate with the drone  |`IcarusDriver::SetMode(std::string mode)`|
 | arm / disarm  | arm or disarm the drone | `IcarusDriver::armDisarm(int arm)`|
 | take off  | take off to a preorder altitude  |`IcarusDriver::takeoff(double alt)`|
-| move to local point  | move to a point in the local map |`IcarusDriver::moveLocalTo(double x, double y, double z)`|
+| move to local point  | move to a point in the local map |`IcarusDriver::moveLocalTo(double x, double y,double z)`|
 | ack notifier | notify an external serial port device |`IcarusDriver::notifyAck(std::string msg)`|
 
 
