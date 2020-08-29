@@ -45,6 +45,6 @@ This is the launch file located inside the *mavros* package previously installed
 
 
 
-At this moment, you can send commands to the simulated drone using ros topics or services, we strongly recommend to compile your ws before test anything.
+At this moment, you can send commands to the simulated drone using ros topics or services, we strongly recommend to compile your ws before test anything, because sometimes there are some problems with some parts of mavros.
 
 Enjoy!
