@@ -18,10 +18,9 @@
 
 Bocanegra is a state machine conceived specially for this project and addressed to give the best performace for our purpose.
 
-<!-- <img src="/home/pabloc/Desktop/Github/Icarus-Project/docs/diagram.png" width="600" height="400" > -->
 
 <p align="center">
-  <img width="550" height="310" src="/home/pabloc/Desktop/Github/Icarus-Project/docs/diagram.png">
+  <img width="550" height="340" src="docs/bocanegra_diagram.png">
 </p>
 
 #### API of Bocanegra state machine driver
@@ -55,5 +54,5 @@ Bocanegra is a state machine conceived specially for this project and addressed 
 #### EXAMPLE
 
 <p align="center">
-  <img width="580" height="310" src="/home/pabloc/Desktop/Github/Icarus-Project/docs/bocanegra_example.png">
+  <img width="580" height="310" src="docs/bocanegra_example.png">
 </p>
