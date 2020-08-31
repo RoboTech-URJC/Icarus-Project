@@ -3,13 +3,15 @@
 #### API of Icarus driver
 
 
-| NAME  | DESCRIPTION | FUNCTION |
-| -------------| ------------- | ------------- |
-| set mode  | set the mode you want to operate with the drone  |`IcarusDriver::SetMode(std::string mode)`|
-| arm / disarm  | arm or disarm the drone | `IcarusDriver::armDisarm(int arm)`|
-| take off  | take off to a preorder altitude  |`IcarusDriver::takeoff(double alt)`|
-| move to local point  | move to a point in the local map |`IcarusDriver::moveLocalTo(double x, double y,double z)`|
-| ack notifier | notify an external serial port device |`IcarusDriver::notifyAck(std::string msg)`|
+| NAME  | DESCRIPTION | ACESS | FUNCTION |
+| -------------| ------------- | ------------- |------------- |
+| set mode  | set the mode you want to operate with the drone | `public` |`void IcarusDriver::SetMode(std::string mode)`|
+| arm / disarm  | arm or disarm the drone | `public` |`void IcarusDriver::armDisarm(int arm)`|
+| take off  | take off to a preorder altitude  |`public` | `void IcarusDriver::takeoff(double alt)`|
+| move to local point  | move to a point in the local map | `public`|`void IcarusDriver::moveLocalTo(double x, double y,double z)`|
+| turn to local point  | turn to a point in the local map | `public`|`IcarusDriver::void turnLocalTo(double roll, double pitch, double yaw);`|
+| Init parameters | inicialization of parameters | `private`| `IcarusDriver::void initParams();`|
+| ack notifier | notify an external serial port device |`private`|`void IcarusDriver::notifyAck(std::string msg)`|
 
 
 > TODO: landing(), emergency_landing(), move_global_to()
@@ -25,12 +27,13 @@ Bocanegra is a state machine conceived specially for this project and addressed 
 
 #### API of Bocanegra state machine driver
 
-| NAME  | DESCRIPTION | FUNCTION |
-| -------------| ------------- | ------------- |
-| is active | check if a node is active  | `Bocanegra::isActive(std::string node_name)` |
-| activate  | active an inactivate node | `Bocanegra::activate(std::string node_name)`|
-| deactivate  | deactivate a node |`Bocanegra::deactivate(std::string node_name)`|
-| states callback | give the vector of states |`Bocanegra::statesCallback(const boca_negra_msgs::states::ConstPtr msg)`|
+| NAME  | DESCRIPTION | ACESS | FUNCTION |
+| -------------| ------------- | ------------- |------------- |
+| is active | check if a node is active  | `protected` | `bool Bocanegra::isActive()` |
+| activate  | active an inactivate node | `protected` | `void Bocanegra::activate(std::string node_name)`|
+| deactivate  | deactivate a node | `protected` | `void Bocanegra::deactivate(std::string node_name)`|
+| states callback | give the vector of states |`private`|`void Bocanegra::statesCallback(const boca_negra_msgs::states::ConstPtr msg)`|
+| is active | check if a node is active  | `private` | `bool Bocanegra::isActive(std::string node_name)` |
 
 
 
@@ -55,4 +58,9 @@ Bocanegra is a state machine conceived specially for this project and addressed 
 
 <p align="center">
   <img width="580" height="310" src="docs/bocanegra_example.png">
+</p>
+
+
+<p align="center">
+  <img width="580" height="310" src="docs/bocanegra_example2.png">
 </p>
