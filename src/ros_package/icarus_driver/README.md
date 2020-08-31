@@ -22,7 +22,7 @@ Bocanegra is a state machine conceived specially for this project and addressed 
 
 
 <p align="center">
-  <img width="550" height="340" src="docs/bocanegra_diagram.png">
+  <img width="700" height="360" src="docs/bocanegra_diagram.png">
 </p>
 
 #### API of Bocanegra state machine driver
