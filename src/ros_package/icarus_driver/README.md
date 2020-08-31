@@ -56,6 +56,19 @@ Bocanegra is a state machine conceived specially for this project and addressed 
 
 #### EXAMPLE
 
+to begin to use our implementation, follow these steps:
+
+ 1. at /Firmware run `Tools/gazebo_sitl_multiple_run.sh -n 1`
+ 2. at your ws run `roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"`
+ 3. `roslaunch icarus_driver icarus_driver.launch`
+ 4. `rosrun simple_mover_drone hfsm_mover_node`
+
+ optionally you can visualize:
+ - rviz: `rosrun rviz rviz`
+ - drone position: `rostopic echo /mavros/local_position/pose`
+
+
+
 <p align="center">
   <img width="580" height="310" src="docs/bocanegra_example.png">
 </p>
