@@ -128,7 +128,26 @@ IcarusDriver::takeoff(double alt)
   if (sc.call(take_off)) {
    ROS_INFO("%s", "Take Off Succesfully");
   } else {
-   ROS_ERROR("%s","take Off Failed");
+   ROS_ERROR("%s","Take Off Failed");
+  }
+}
+
+void
+IcarusDriver::land()
+{
+  /*
+   * params: latitude, longitude and altitude to takeoff
+   */
+
+  ros::ServiceClient sc = nh_.serviceClient<mavros_msgs::CommandTOL>(land_srv_);
+
+  mavros_msgs::CommandTOL srv;
+  srv.request.altitude = 0.0;
+
+  if (sc.call(srv)) {
+   ROS_INFO("%s", "Land Succesfully");
+  } else {
+   ROS_ERROR("%s","Land Failed");
   }
 }
 
@@ -249,11 +268,13 @@ IcarusDriver::initParams()
   arm_disarm_srv_ = "/mavros/cmd/arming";
   local_pose_topic_ = "/mavros/local_position/pose";
   local_pose_setter_topic_ = "/mavros/setpoint_position/local";
+  land_srv_ = "/mavros/cmd/land";
 
   nh_.param("set_mode_srv", set_mode_srv_, set_mode_srv_);
   nh_.param("arm_disarm_srv", arm_disarm_srv_, arm_disarm_srv_);
   nh_.param("local_pose_topic", local_pose_topic_, local_pose_topic_);
   nh_.param("local_pose_setter_topic", local_pose_setter_topic_, local_pose_setter_topic_);
+  nh_.param("land_srv", land_srv_, land_srv_);
 }
 
 };  // namespace icarus_driver

@@ -30,6 +30,7 @@ HFSM::HFSM()
 	initParams();
 	target_altitude_ = 3.0;
 	target_x_ = 3.0;
+	iterations_ = 0;
 	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &HFSM::droneStateCb, this);
 	mover_local_sub_ = nh_.subscribe("/icarus_driver/mover_local/finished", 1, &HFSM::moverLocalCb, this);
 	local_pos_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(local_pos_topic_, 1);
@@ -98,13 +99,30 @@ HFSM::step()
 			}
 			turnCodeIterative();
 
-			if (turn2finish()) {
+			if (turn2land()) {
+				code_once_executed_ = false;
+				state_ = LAND;
+			} else if (turn2forward()) {
 				code_once_executed_ = false;
 				state_ = FORWARD;
 			}
 			break;
 
+		case LAND:
+			if (!code_once_executed_) {
+				landCodeOnce();
+				code_once_executed_ = true;
+			}
+			landCodeIterative();
+
+			if (land2finish()) {
+				code_once_executed_ = false;
+				state_ = 6;
+			}
+			break;
+
 		default:
+			deactivate("mover_local_node");
 			break;
 	}
 }
@@ -177,6 +195,7 @@ void
 HFSM::turnCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Turn");
+	iterations_++;
 
 	// Turn Pi/2:
 
@@ -187,6 +206,22 @@ void
 HFSM::turnCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Turn");
+}
+
+void
+HFSM::landCodeOnce()
+{
+	ROS_WARN("State [%s]\n", "Land");
+
+	// Land:
+
+	land();
+}
+
+void
+HFSM::landCodeIterative()
+{
+	ROS_INFO("State [%s] Code Iterative\n", "Land");
 }
 
 bool
@@ -222,13 +257,29 @@ HFSM::forward2turn()
 }
 
 bool
-HFSM::turn2finish()
+HFSM::turn2forward()
 {
 	if (mover_local_finished_) {
 		mover_local_finished_ = false;
 		return true;
 	}
 	return false;
+}
+
+bool
+HFSM::turn2land()
+{
+	if (mover_local_finished_ && iterations_ == 4) {
+		mover_local_finished_ = false;
+		return true;
+	}
+	return false;
+}
+
+bool
+HFSM::land2finish()
+{
+	return true;
 }
 
 };	// namespace simple_mover_drone
