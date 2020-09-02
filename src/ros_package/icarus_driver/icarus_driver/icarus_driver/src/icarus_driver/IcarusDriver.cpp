@@ -103,7 +103,7 @@ void
 IcarusDriver::takeoff(double alt)
 {
   /*
-   * params: latitude, longitude and altitude to takeoff
+   * params: altitude to takeoff
    */
 
   ros::ServiceClient sc = nh_.serviceClient<icarus_driver_msgs::TargetPose>(
@@ -147,15 +147,16 @@ IcarusDriver::land()
   if (sc.call(srv)) {
    ROS_INFO("%s", "Land Succesfully");
   } else {
-   ROS_ERROR("%s","Land Failed");
+   ROS_ERROR("%s"," Land Failed, your drone could be in danger");
   }
 }
+
 
 void
 IcarusDriver::moveLocalTo(double x, double y, double z)
 {
   /*
-   * params: latitude, longitude and altitude to takeoff
+   * params: latitude, longitude and altitude to move to a specific point
    */
 
   ros::ServiceClient sc = nh_.serviceClient<icarus_driver_msgs::TargetPose>(
@@ -188,7 +189,7 @@ void
 IcarusDriver::turnLocalTo(double roll, double pitch, double yaw)
 {
   /*
-   * params: latitude, longitude and altitude to takeoff
+   * params: roll, pitch and yaw to turn
    */
 
   ros::ServiceClient sc = nh_.serviceClient<icarus_driver_msgs::TargetPose>(

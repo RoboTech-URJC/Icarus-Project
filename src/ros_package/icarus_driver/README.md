@@ -14,7 +14,7 @@
 | ack notifier | notify an external serial port device |`private`|`void IcarusDriver::notifyAck(std::string msg)`|
 
 
-> TODO: landing(), emergency_landing(), move_global_to()
+> TODO: emergency_land(), move_global_to(), watchdog()
 
 # BOCANEGRA
 

@@ -31,9 +31,10 @@ namespace icarus_driver
     void setMode(std::string mode);
     void armDisarm(int arm);
     void takeoff(double alt);
-    void land();
+	void land();
     void moveLocalTo(double x, double y, double z);
     void turnLocalTo(double roll, double pitch, double yaw);
+	//void wachdog(double time); //delay time waiting in a certain point
 
   private:
     void initParams();
