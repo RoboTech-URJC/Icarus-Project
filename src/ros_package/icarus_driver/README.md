@@ -14,7 +14,7 @@
 | ack notifier | notify an external serial port device |`private`|`void IcarusDriver::notifyAck(std::string msg)`|
 
 
-> TODO: landing(), emergency_landing(), move_global_to()
+> TODO: emergency_land(), move_global_to(), watchdog()
 
 # BOCANEGRA
 
@@ -22,7 +22,7 @@ Bocanegra is a state machine conceived specially for this project and addressed 
 
 
 <p align="center">
-  <img width="700" height="360" src="https://github.com/RoboTech-URJC/Icarus-Project/tree/master/docs/bocanegra_diagram.png">
+  <img width="700" height="360" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/bocanegra_diagram.png">
 </p>
 
 #### API of Bocanegra state machine driver
@@ -70,10 +70,10 @@ to begin to use our implementation, follow these steps:
 
 
 <p align="center">
-  <img width="580" height="310" src="https://github.com/RoboTech-URJC/Icarus-Project/tree/master/docs/bocanegra_example.png">
+  <img width="580" height="310" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/bocanegra_example.png">
 </p>
 
 
 <p align="center">
-  <img width="580" height="310" src="https://github.com/RoboTech-URJC/Icarus-Project/tree/master/docs/bocanegra_example2.png">
+  <img width="580" height="310" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/bocanegra_example2.png">
 </p>
