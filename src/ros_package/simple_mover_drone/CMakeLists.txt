@@ -126,6 +126,7 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/HFSM.cpp
+  src/up_down/up_down.cpp
 )
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
@@ -143,6 +144,9 @@ target_link_libraries(hfsm_mover_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 add_executable(mover_node src/mover.cpp)
 target_link_libraries(mover_node ${catkin_LIBRARIES})
+
+add_executable(up_down_node src/up_down_executor.cpp)
+target_link_libraries(up_down_node ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
