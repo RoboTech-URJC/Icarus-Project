@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* Author: Pablo Castellanos p4b5.git@gmail.com */
+/* Author: Pablo Castellanos p4b5git@gmail.com */
 
-#include "simple_mover_drone/UP_DOWN.hpp"
+#include "up_down/up_down.hpp"
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 
-namespace simple_mover_drone
+namespace up_down
 {
 UP_DOWN::UP_DOWN()
 : icarus_driver::IcarusDriver(),
@@ -28,10 +28,10 @@ UP_DOWN::UP_DOWN()
 	mover_local_finished_(false)
 {
 	initParams();
-	target_altitude_ = 3.0;
+	target_altitude_ = 5.0;
 	target_x_ = 3.0;
-	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &HFSM::droneStateCb, this);
-	mover_local_sub_ = nh_.subscribe("/icarus_driver/mover_local/finished", 1, &HFSM::moverLocalCb, this);
+	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &UP_DOWN::droneStateCb, this);
+	mover_local_sub_ = nh_.subscribe("/icarus_driver/mover_local/finished", 1, &UP_DOWN::moverLocalCb, this);
 	local_pos_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(local_pos_topic_, 1);
 }
 
@@ -83,11 +83,11 @@ UP_DOWN::step()
 				landCodeOnce();
 				code_once_executed_ = true;
 			}
-			forwardCodeIterative();
+			landCodeIterative();
 
 			if (land2finish()) {
 				code_once_executed_ = false;
-				state_ = TURN;
+				state_ = FINISH;
 			}
 			break;
 
@@ -147,6 +147,19 @@ UP_DOWN::takeoffCodeIterative()
 	ROS_INFO("State [%s] Code Iterative\n", "Takeoff");
 }
 
+void
+UP_DOWN::landCodeOnce()
+{
+	ROS_WARN("State [%s]\n", "Land");
+	land();
+}
+
+void
+UP_DOWN::landCodeIterative()
+{
+	ROS_INFO("State [%s] Code Iterative\n", "Land");
+}
+
 
 bool
 UP_DOWN::init2arm()
@@ -174,11 +187,7 @@ UP_DOWN::takeoff2land()
 bool
 UP_DOWN::land2finish()
 {
-	if (mover_local_finished_) {
-		mover_local_finished_ = false;
-		return true;
-	}
-	return false;
+	return true;
 }
 
 };	// namespace simple_mover_drone

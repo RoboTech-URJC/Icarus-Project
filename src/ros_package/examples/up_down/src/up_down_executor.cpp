@@ -24,11 +24,11 @@ main(int argc, char **argv)
 {
 	ros::init(argc, argv, "up_down_node");
 
-	up_down::up_down ud;
+	up_down::UP_DOWN up_down;
 
 	ros::Rate rate(HZ);
 	while (ros::ok()) {
-		ud.step();
+		up_down.step();
 		ros::spinOnce();
 		rate.sleep();
 	}

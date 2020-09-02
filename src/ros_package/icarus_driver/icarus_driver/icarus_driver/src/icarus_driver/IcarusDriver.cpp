@@ -147,40 +147,8 @@ IcarusDriver::land()
   if (sc.call(srv)) {
    ROS_INFO("%s", "Land Succesfully");
   } else {
-   ROS_ERROR("%s","Land Failed");
+   ROS_ERROR("%s"," Land Failed, your drone could be in danger");
   }
-}
-
-void
-IcarusDriver::land()
-{
-	/*
-		method to land
-	*/
-
-	ros::ServiceClient sc = nh_.serviceClient<icarus_driver_msgs::TargetPose>(
-	"/icarus_driver/mover_local_srv");
-
-	icarus_driver_msgs::TargetPose land;
-	geometry_msgs::PoseStamped target_pose;
-
-	target_pose.header.frame_id = "base_link";
-	target_pose.header.stamp = ros::Time::now();
-	target_pose.pose.position.x = 0.0;
-	target_pose.pose.position.y = 0.0;
-	target_pose.pose.position.z = 0.0;
-
-	target_pose.pose.orientation.x = 0.0;
-	target_pose.pose.orientation.y = 0.0;
-	target_pose.pose.orientation.z = 0.0;
-	target_pose.pose.orientation.w = 1.0;
-
-	if (sc.call(land)) {
-	 ROS_INFO("%s", "Land Succesfully");
-	} else {
-	 ROS_ERROR("%s"," Land Failed, your drone could be in danger");
-	}
-
 }
 
 

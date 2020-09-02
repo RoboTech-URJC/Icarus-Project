@@ -25,7 +25,7 @@
 #include "boca_negra/Bocanegra.hpp"
 #include "icarus_driver/IcarusDriver.hpp"
 
-namespace simple_mover_drone
+namespace up_down
 {
 class UP_DOWN : public boca_negra::Bocanegra, icarus_driver::IcarusDriver
 {
@@ -50,7 +50,7 @@ private:
 	void takeoffCodeOnce();
 	void takeoffCodeIterative();
 
-	void landfCodeOnce();
+	void landCodeOnce();
 	void landCodeIterative();
 
 	bool init2arm();
@@ -62,6 +62,7 @@ private:
 	static const int ARM = 1;
 	static const int TAKEOFF = 2;
 	static const int LAND =  3;
+	static const int FINISH = 4;
 
 	ros::NodeHandle nh_;
 	ros::Subscriber drone_state_sub_, altitude_sub_, mover_local_sub_;
