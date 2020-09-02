@@ -56,23 +56,29 @@ private:
 	void turnCodeOnce();
 	void turnCodeIterative();
 
+	void landCodeOnce();
+	void landCodeIterative();
+
 	bool init2arm();
 	bool arm2takeoff();
 	bool takeoff2forward();
 	bool forward2turn();
-	bool turn2finish();
+	bool turn2forward();
+	bool turn2land();
+	bool land2finish();
 
 	static const int INIT = 0;
 	static const int ARM = 1;
 	static const int TAKEOFF = 2;
 	static const int FORWARD = 3;
 	static const int TURN = 4;
+	static const int LAND = 5;
 
 	ros::NodeHandle nh_;
 	ros::Subscriber drone_state_sub_, altitude_sub_, mover_local_sub_;
 	ros::Publisher local_pos_pub_;
 
-	int state_;
+	int state_, iterations_;
 	double target_altitude_, target_x_, target_angle;
 	float current_altitude_;
 	bool code_once_executed_, mover_local_finished_;

@@ -31,6 +31,7 @@ namespace icarus_driver
     void setMode(std::string mode);
     void armDisarm(int arm);
     void takeoff(double alt);
+    void land();
     void moveLocalTo(double x, double y, double z);
     void turnLocalTo(double roll, double pitch, double yaw);
 
@@ -45,7 +46,7 @@ namespace icarus_driver
 
   protected:
     std::string set_mode_srv_, arm_disarm_srv_, takeoff_srv_, local_pose_topic_,
-      local_pose_setter_topic_;
+      local_pose_setter_topic_, land_srv_;;
   };
 };  //namespace icarus_driver
 

@@ -15,6 +15,7 @@
 	<arg name="arm_disarm_srv" default="/mavros/cmd/arming" />
 	<arg name="local_pose_topic" default="/mavros/local_position/pose" />
 	<arg name="local_pose_setter_topic" default="/mavros/setpoint_position/local" />
+	<arg name="land_srv" default="/icarus_driver/mover_local_srv" />
 
 	<!-- launch main Icarus Driver nodes -->
 
