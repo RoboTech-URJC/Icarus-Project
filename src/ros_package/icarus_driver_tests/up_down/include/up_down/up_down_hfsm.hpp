@@ -14,8 +14,8 @@
 
 /* Author:Pablo Castellanos p4b5.git@gmail.com */
 
-#ifndef SIMPLE_MOVER_DRONE__HFSM_HPP_
-#define SIMPLE_MOVER_DRONE__HFSM_HPP_
+#ifndef UP_DOWN__HFSM_HPP_
+#define UP_DOWN__HFSM_HPP_
 
 #include <string>
 #include <ros/ros.h>
@@ -27,10 +27,10 @@
 
 namespace up_down
 {
-class UP_DOWN : public boca_negra::Bocanegra, icarus_driver::IcarusDriver
+class UpDownHFSM : public boca_negra::Bocanegra, icarus_driver::IcarusDriver
 {
 public:
-	UP_DOWN();
+	UpDownHFSM();
 
 	void step();
 
@@ -66,7 +66,6 @@ private:
 
 	ros::NodeHandle nh_;
 	ros::Subscriber drone_state_sub_, altitude_sub_, mover_local_sub_;
-	ros::Publisher local_pos_pub_;
 
 	int state_;
 	double target_altitude_, target_x_, target_angle;
@@ -75,6 +74,6 @@ private:
 	std::string drone_state_topic_, local_pos_topic_;
 	mavros_msgs::State drone_state_;
 };
-};	// namespace simple_mover_drone
+};	// namespace up_down
 
-#endif	// SIMPLE_MOVER_DRONE__HFSM_HPP_
+#endif	// UP_DOWN__HFSM_HPP_

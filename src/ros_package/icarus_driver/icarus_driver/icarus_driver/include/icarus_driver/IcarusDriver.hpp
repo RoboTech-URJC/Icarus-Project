@@ -47,7 +47,7 @@ namespace icarus_driver
 
   protected:
     std::string set_mode_srv_, arm_disarm_srv_, takeoff_srv_, local_pose_topic_,
-      local_pose_setter_topic_, land_srv_;;
+      local_pose_setter_topic_, land_srv_;
   };
 };  //namespace icarus_driver
 
