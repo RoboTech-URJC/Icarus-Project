@@ -14,13 +14,13 @@
 
 /* Author: Pablo Castellanos p4b5git@gmail.com */
 
-#include "up_down/up_down.hpp"
+#include "up_down/up_down_hfsm.hpp"
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 
 namespace up_down
 {
-UP_DOWN::UP_DOWN()
+UpDownHFSM::UpDownHFSM()
 : icarus_driver::IcarusDriver(),
 	nh_(""),
 	state_(INIT),
@@ -30,13 +30,12 @@ UP_DOWN::UP_DOWN()
 	initParams();
 	target_altitude_ = 5.0;
 	target_x_ = 3.0;
-	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &UP_DOWN::droneStateCb, this);
-	mover_local_sub_ = nh_.subscribe("/icarus_driver/mover_local/finished", 1, &UP_DOWN::moverLocalCb, this);
-	local_pos_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(local_pos_topic_, 1);
+	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &UpDownHFSM::droneStateCb, this);
+	mover_local_sub_ = nh_.subscribe("/icarus_driver/mover_local/finished", 1, &UpDownHFSM::moverLocalCb, this);
 }
 
 void
-UP_DOWN::step()
+UpDownHFSM::step()
 {
 	switch (state_) {
 		case INIT:
@@ -97,43 +96,41 @@ UP_DOWN::step()
 }
 
 void
-UP_DOWN::initParams()
+UpDownHFSM::initParams()
 {
 	drone_state_topic_ = "/mavros/state";
-	local_pos_topic_ = "/mavros/setpoint_position/local";
 
 	nh_.param("drone_state_topic", drone_state_topic_, drone_state_topic_);
-	nh_.param("local_pos_topic", local_pos_topic_, local_pos_topic_);
 }
 
 void
-UP_DOWN::droneStateCb(const mavros_msgs::State::ConstPtr & msg)
+UpDownHFSM::droneStateCb(const mavros_msgs::State::ConstPtr & msg)
 {
 	drone_state_ = *msg;
 }
 
 void
-UP_DOWN::moverLocalCb(const std_msgs::Empty & msg)
+UpDownHFSM::moverLocalCb(const std_msgs::Empty & msg)
 {
 	mover_local_finished_ = true;
 }
 
 void
-UP_DOWN::initCodeOnce()
+UpDownHFSM::initCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Init");
 	setMode("OFFBOARD");
 }
 
 void
-UP_DOWN::armCodeOnce()
+UpDownHFSM::armCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Arm");
 	armDisarm(1);
 }
 
 void
-UP_DOWN::takeoffCodeOnce()
+UpDownHFSM::takeoffCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Takeoff");
 	activate("mover_local_node");
@@ -142,39 +139,39 @@ UP_DOWN::takeoffCodeOnce()
 }
 
 void
-UP_DOWN::takeoffCodeIterative()
+UpDownHFSM::takeoffCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Takeoff");
 }
 
 void
-UP_DOWN::landCodeOnce()
+UpDownHFSM::landCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Land");
 	land();
 }
 
 void
-UP_DOWN::landCodeIterative()
+UpDownHFSM::landCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Land");
 }
 
 
 bool
-UP_DOWN::init2arm()
+UpDownHFSM::init2arm()
 {
 	return true;
 }
 
 bool
-UP_DOWN::arm2takeoff()
+UpDownHFSM::arm2takeoff()
 {
 	return drone_state_.armed;
 }
 
 bool
-UP_DOWN::takeoff2land()
+UpDownHFSM::takeoff2land()
 {
 	if (mover_local_finished_) {
 		mover_local_finished_ = false;
@@ -185,7 +182,7 @@ UP_DOWN::takeoff2land()
 
 
 bool
-UP_DOWN::land2finish()
+UpDownHFSM::land2finish()
 {
 	return true;
 }

@@ -15,16 +15,16 @@
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
 #include <ros/ros.h>
-#include "up_down/up_down.hpp"
+#include "up_down/up_down_hfsm.hpp"
 
 #define HZ 5
 
 int
-main(int argc, char **argv)
+main(int argc, char ** argv)
 {
 	ros::init(argc, argv, "up_down_node");
 
-	up_down::UP_DOWN up_down;
+	up_down::UpDownHFSM up_down;
 
 	ros::Rate rate(HZ);
 	while (ros::ok()) {
