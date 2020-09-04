@@ -16,10 +16,10 @@ The drone armed, take off, reach the max high assigned and land. This example is
 
 
 <p align="center">
-  <img width="700" height="360" src="https://github.com/P4B5/Icarus-Project/blob/master/docs/up_down_diagram_1.png">
+  <img width="500" height="260" src="https://github.com/P4B5/Icarus-Project/blob/master/docs/up_down_diagram_1.png">
 </p>
 
 
 <p align="center">
-  <img width="700" height="360" src="https://github.com/P4B5/Icarus-Project/blob/master/docs/up_down_diagram_2.png">
+  <img width="400" height="360" src="https://github.com/P4B5/Icarus-Project/blob/master/docs/up_down_diagram_2.png">
 </p>
