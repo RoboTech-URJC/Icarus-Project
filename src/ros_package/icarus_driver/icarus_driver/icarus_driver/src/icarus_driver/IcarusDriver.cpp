@@ -20,8 +20,11 @@
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/CommandTOL.h>
+#include <mavros_msgs/State.h>
+#include <mavros_msgs/BatteryStatus.h>
 #include <std_msgs/String.h>
 #include "icarus_driver_msgs/TargetPose.h"
+
 
 namespace icarus_driver
 {
@@ -29,11 +32,16 @@ namespace icarus_driver
 IcarusDriver::IcarusDriver():
   nh_("~")
 {
-  ROS_INFO("%s", "Hello World! I'm Icarus Drone");
+  ROS_INFO("%s", "SETTING UP ICARUS DRONE...");
 
   initParams();
 
   ack_notifier_ = nh_.advertise<std_msgs::String>("/icarus_driver/ack_notify", 1);
+  is_armed_sub_ = nh_.subscribe(is_armed_topic_, 1, &IcarusDriver::isArmedCallback, this);
+  battery_status_sub_ = nh_.subscribe(battery_status_topic_, 1, &IcarusDriver::batteryStatusCallback, this);
+
+  ROS_INFO("%s", " *** ICARUS DRONE OPERATING *** ");
+
 }
 
 void
@@ -98,6 +106,30 @@ IcarusDriver::armDisarm(int arm)
    }
    notifyAck(msg);
 }
+
+
+void
+IcarusDriver::isArmedCallback(const mavros_msgs::State::ConstPtr& msg){
+
+	// mavros_msgs/State
+	is_armed = msg->armed;
+
+	// if (is_armed) {
+	//   ROS_WARN("The drone is ARMED");
+   //  } else {
+	//   ROS_WARN("The drone is DISARMED");
+   // }
+}
+
+
+void
+IcarusDriver::batteryStatusCallback(const mavros_msgs::BatteryStatus::ConstPtr& msg){
+
+	// msgs: mavros_msgs/batteryStatus
+	battery_percentage = msg->remaining;
+	// ROS_INFO("the status of the battery is: %lf", battery_percentage);
+}
+
 
 void
 IcarusDriver::takeoff(double alt)
@@ -237,12 +269,19 @@ IcarusDriver::initParams()
   local_pose_topic_ = "/mavros/local_position/pose";
   local_pose_setter_topic_ = "/mavros/setpoint_position/local";
   land_srv_ = "/mavros/cmd/land";
+  is_armed_topic_ = "/mavros/state";
+  battery_status_topic_ = "/mavros/battery";
+
 
   nh_.param("set_mode_srv", set_mode_srv_, set_mode_srv_);
   nh_.param("arm_disarm_srv", arm_disarm_srv_, arm_disarm_srv_);
   nh_.param("local_pose_topic", local_pose_topic_, local_pose_topic_);
   nh_.param("local_pose_setter_topic", local_pose_setter_topic_, local_pose_setter_topic_);
   nh_.param("land_srv", land_srv_, land_srv_);
+  nh_.param("is_armed_topic_", is_armed_topic_, is_armed_topic_);
+  nh_.param("battery_status_topic_", battery_status_topic_, battery_status_topic_);
+
+
 }
 
 };  // namespace icarus_driver

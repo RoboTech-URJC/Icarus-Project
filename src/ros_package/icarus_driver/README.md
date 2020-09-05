@@ -10,8 +10,14 @@
 | take off  | take off to a preorder altitude  |`public` | `void IcarusDriver::takeoff(double alt)`|
 | move to local point  | move to a point in the local map | `public`|`void IcarusDriver::moveLocalTo(double x, double y,double z)`|
 | turn to local point  | turn to a point in the local map | `public`|`IcarusDriver::void turnLocalTo(double roll, double pitch, double yaw);`|
-| Init parameters | inicialization of parameters | `private`| `IcarusDriver::void initParams();`|
+| is armed | check if the drone is armed |`public`|`bool IcarusDriver::getArmStatus()`|
+| battery status | check battery status |`public`|`float IcarusDriver::getBatteryStatus()`|
+| Init parameters | inicialization of parameters | `private`| `void IcarusDriver::initParams();`|
 | ack notifier | notify an external serial port device |`private`|`void IcarusDriver::notifyAck(std::string msg)`|
+| is armed callback | notify an external serial port device |`private`|`void IcarusDriver::isArmedCallback(const mavros_msgs::State::ConstPtr& msg);`|
+| battery status callback | notify an external serial port device |`private`|`void IcarusDriver::batteryStatusCallback(const mavros_msgs::BatteryStatus::ConstPtr& msg);`|
+
+
 
 
 > TODO: emergency_land(), move_global_to(), watchdog()

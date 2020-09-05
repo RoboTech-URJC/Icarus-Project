@@ -119,6 +119,7 @@ void
 UpDownHFSM::initCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Init");
+	ROS_INFO("Battery status: [%f]\n", getBatteryPercentage());
 	setMode("OFFBOARD");
 }
 
@@ -127,6 +128,12 @@ UpDownHFSM::armCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Arm");
 	armDisarm(1);
+
+	if (getArmStatus()) {
+		ROS_WARN("Icarus Drone is ARMED");
+	}else{
+		ROS_WARN("Icarus Drone is DISARMED");
+	}
 }
 
 void
