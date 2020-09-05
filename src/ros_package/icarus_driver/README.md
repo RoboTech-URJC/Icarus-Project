@@ -42,7 +42,7 @@ Bocanegra is a state machine conceived specially for this project and addressed 
 
 | NAME  | DESCRIPTION | MSGS |
 | -------------| ------------- | ------------- |
-| node_state | msg with the node and its state |<p>`std_msgs/String node_name`</p> <p>`std_msgs/Bool is_active`</p>|
+| state | msg with the node and its state |<p>`std_msgs/String node_name`</p> <p>`std_msgs/Bool is_active`</p>|
 | states  | array with all the current node_states  | `state[] array`|
 
 
