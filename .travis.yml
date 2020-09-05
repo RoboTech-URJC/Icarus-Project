@@ -18,7 +18,7 @@ env:
     - CI_SOURCE_PATH=$(pwd)
     - ROSINSTALL_FILE=$CI_SOURCE_PATH/dependencies.rosinstall
     - CATKIN_OPTIONS=$CI_SOURCE_PATH/catkin.options
-    - ROS_PARALLEL_JOBS='-j8 -l6'
+    #- ROS_PARALLEL_JOBS='-j8 -l6'
     - PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages:/usr/local/lib/python2.7/dist-packages
 
 git:
@@ -53,7 +53,7 @@ before_script:
 script:
   - source /opt/ros/$ROS_DISTRO/setup.bash
   - cd ~/catkin_ws
-  - catkin_make -j 1 #compile with just one thread
+  - catkin_make -j1 #compile with just one thread
 #   - catkin_make $( [ -f $CATKIN_OPTIONS ] && cat $CATKIN_OPTIONS ) --only-pkg-with-deps basic_ros robots geometry_tf
   - source devel/setup.bash
 # add linter in case it's necessary
