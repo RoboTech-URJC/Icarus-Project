@@ -9,6 +9,7 @@ project(up_down)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   boca_negra
+  boca_negra_msgs
   geometry_msgs
   icarus_driver
   mavros_msgs
