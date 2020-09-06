@@ -14,9 +14,9 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#include "simple_mover_drone/HFSM.hpp"
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
+#include "simple_mover_drone/HFSM.h"
 
 namespace simple_mover_drone
 {

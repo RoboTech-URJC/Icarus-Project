@@ -14,8 +14,8 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#ifndef SIMPLE_MOVER_DRONE__HFSM_HPP_
-#define SIMPLE_MOVER_DRONE__HFSM_HPP_
+#ifndef SIMPLE_MOVER_DRONE__HFSM_H_
+#define SIMPLE_MOVER_DRONE__HFSM_H_
 
 #include <string>
 #include <ros/ros.h>
@@ -87,4 +87,4 @@ private:
 };
 };	// namespace simple_mover_drone
 
-#endif	// SIMPLE_MOVER_DRONE__HFSM_HPP_
+#endif	// SIMPLE_MOVER_DRONE__HFSM_H_

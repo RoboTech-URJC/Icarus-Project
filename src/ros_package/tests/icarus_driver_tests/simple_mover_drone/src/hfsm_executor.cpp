@@ -15,7 +15,7 @@
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
 #include <ros/ros.h>
-#include "simple_mover_drone/HFSM.hpp"
+#include "simple_mover_drone/HFSM.h"
 
 #define HZ 5
 
