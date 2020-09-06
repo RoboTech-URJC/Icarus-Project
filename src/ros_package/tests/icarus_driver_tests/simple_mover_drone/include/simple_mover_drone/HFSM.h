@@ -42,12 +42,12 @@ private:
   /* -------------- */
 
   void initCodeOnce();
-
-  // void initCodeIterative();
+  void initCodeIterative()
+  {}
 
   void armCodeOnce();
-
-  // void armCodeIterative();
+  void armCodeIterative()
+  {}
 
   void takeoffCodeOnce();
   void takeoffCodeIterative();
