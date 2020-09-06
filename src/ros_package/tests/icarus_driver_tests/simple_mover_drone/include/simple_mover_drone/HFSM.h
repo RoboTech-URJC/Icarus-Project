@@ -14,8 +14,8 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#ifndef SIMPLE_MOVER_DRONE__HFSM_H_
-#define SIMPLE_MOVER_DRONE__HFSM_H_
+#ifndef SIMPLE_MOVER_DRONE_HFSM_H
+#define SIMPLE_MOVER_DRONE_HFSM_H
 
 #include <string>
 #include <ros/ros.h>
@@ -30,61 +30,63 @@ namespace simple_mover_drone
 class HFSM : public boca_negra::Bocanegra, icarus_driver::IcarusDriver
 {
 public:
-	HFSM();
+  HFSM();
 
-	void step();
+  void step();
 
 private:
-	void initParams();
-	void droneStateCb(const mavros_msgs::State::ConstPtr & msg);
-	void moverLocalCb(const std_msgs::Empty & msg);
+  void initParams();
+  void droneStateCb(const mavros_msgs::State::ConstPtr & msg);
+  void moverLocalCb(const std_msgs::Empty & msg);
 
-	/* -------------- */
+  /* -------------- */
 
-	void initCodeOnce();
-	void initCodeIterative(){}
+  void initCodeOnce();
 
-	void armCodeOnce();
-	void armCodeIterative(){}
+  // void initCodeIterative();
 
-	void takeoffCodeOnce();
-	void takeoffCodeIterative();
+  void armCodeOnce();
 
-	void forwardCodeOnce();
-	void forwardCodeIterative();
+  // void armCodeIterative();
 
-	void turnCodeOnce();
-	void turnCodeIterative();
+  void takeoffCodeOnce();
+  void takeoffCodeIterative();
 
-	void landCodeOnce();
-	void landCodeIterative();
+  void forwardCodeOnce();
+  void forwardCodeIterative();
 
-	bool init2arm();
-	bool arm2takeoff();
-	bool takeoff2forward();
-	bool forward2turn();
-	bool turn2forward();
-	bool turn2land();
-	bool land2finish();
+  void turnCodeOnce();
+  void turnCodeIterative();
 
-	static const int INIT = 0;
-	static const int ARM = 1;
-	static const int TAKEOFF = 2;
-	static const int FORWARD = 3;
-	static const int TURN = 4;
-	static const int LAND = 5;
+  void landCodeOnce();
+  void landCodeIterative();
 
-	ros::NodeHandle nh_;
-	ros::Subscriber drone_state_sub_, altitude_sub_, mover_local_sub_;
-	ros::Publisher local_pos_pub_;
+  bool init2arm();
+  bool arm2takeoff();
+  bool takeoff2forward();
+  bool forward2turn();
+  bool turn2forward();
+  bool turn2land();
+  bool land2finish();
 
-	int state_, iterations_;
-	double target_altitude_, target_x_, target_angle;
-	float current_altitude_;
-	bool code_once_executed_, mover_local_finished_;
-	std::string drone_state_topic_, local_pos_topic_;
-	mavros_msgs::State drone_state_;
+  static const int INIT = 0;
+  static const int ARM = 1;
+  static const int TAKEOFF = 2;
+  static const int FORWARD = 3;
+  static const int TURN = 4;
+  static const int LAND = 5;
+
+  ros::NodeHandle nh_;
+  ros::Subscriber drone_state_sub_, altitude_sub_, mover_local_sub_;
+  ros::Publisher local_pos_pub_;
+
+  int state_, iterations_;
+  double target_altitude_, target_x_, target_angle;
+  float current_altitude_;
+  bool code_once_executed_, mover_local_finished_;
+  std::string drone_state_topic_, local_pos_topic_;
+  mavros_msgs::State drone_state_;
 };
-};	// namespace simple_mover_drone
+};  // namespace simple_mover_drone
 
-#endif	// SIMPLE_MOVER_DRONE__HFSM_H_
+#endif  // SIMPLE_MOVER_DRONE_HFSM_H

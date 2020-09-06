@@ -22,16 +22,17 @@
 int
 main(int argc, char **argv)
 {
-	ros::init(argc, argv, "hfsm_mover_node");
+  ros::init(argc, argv, "hfsm_mover_node");
 
-	simple_mover_drone::HFSM hfsm;
+  simple_mover_drone::HFSM hfsm;
 
-	ros::Rate rate(HZ);
-	while (ros::ok()) {
-		hfsm.step();
-		ros::spinOnce();
-		rate.sleep();
-	}
+  ros::Rate rate(HZ);
+  while (ros::ok())
+  {
+    hfsm.step();
+    ros::spinOnce();
+    rate.sleep();
+  }
 
-	return 0;
+  return 0;
 }
