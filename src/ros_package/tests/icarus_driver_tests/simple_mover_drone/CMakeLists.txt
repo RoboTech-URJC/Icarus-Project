@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   mavros_msgs
   roscpp
   std_msgs
+  roslint
 )
 
 ## System dependencies are found with CMake's conventions
@@ -159,6 +160,11 @@ target_link_libraries(mover_node ${catkin_LIBRARIES})
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+
+roslint_cpp(
+  src/simple_mover_drone/HFSM.cpp include/simple_mover_drone/HFSM.h
+  src/hfsm_executor.cpp
+)
 
 #############
 ## Install ##
