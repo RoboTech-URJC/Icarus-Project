@@ -12,6 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   icarus_driver
   mavros_msgs
+  sensor_msgs
+  px4_msgs
   roscpp
   std_msgs
 )
@@ -108,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES up_down
-#  CATKIN_DEPENDS boca_negra geometry_msgs icarus_driver mavros_msgs roscpp std_msgs
+#  CATKIN_DEPENDS boca_negra geometry_msgs icarus_driver mavros_msgs roscpp std_msgs px4_msgs sensor_msgs
 #  DEPENDS system_lib
 )
 

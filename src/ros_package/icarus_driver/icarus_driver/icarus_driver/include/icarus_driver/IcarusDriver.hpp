@@ -21,6 +21,8 @@
 #include <ros/ros.h>
 #include <mavros_msgs/State.h>
 #include <mavros_msgs/BatteryStatus.h>
+#include <px4_msgs/BatteryStatus.h>
+#include <sensor_msgs/BatteryState.h>
 
 namespace icarus_driver
 {
@@ -39,7 +41,7 @@ namespace icarus_driver
 
 	//revise inline functions in case code style conflicts
 	float getBatteryPercentage(){return battery_percentage;};
-	bool getArmStatus(){return battery_percentage;};
+	bool getArmStatus(){return is_armed;};
 
   private:
     void initParams();

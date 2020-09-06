@@ -22,8 +22,11 @@
 #include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/State.h>
 #include <mavros_msgs/BatteryStatus.h>
+#include <px4_msgs/BatteryStatus.h>
+#include <sensor_msgs/BatteryState.h>
 #include <std_msgs/String.h>
 #include "icarus_driver_msgs/TargetPose.h"
+
 
 
 namespace icarus_driver
@@ -111,11 +114,10 @@ IcarusDriver::armDisarm(int arm)
 void
 IcarusDriver::isArmedCallback(const mavros_msgs::State::ConstPtr& msg){
 
-	// mavros_msgs/State
 	is_armed = msg->armed;
 
 	// if (is_armed) {
-	//   ROS_WARN("The drone is ARMED");
+	  // ROS_WARN("The drone is ARMED");
    //  } else {
 	//   ROS_WARN("The drone is DISARMED");
    // }
@@ -125,9 +127,9 @@ IcarusDriver::isArmedCallback(const mavros_msgs::State::ConstPtr& msg){
 void
 IcarusDriver::batteryStatusCallback(const mavros_msgs::BatteryStatus::ConstPtr& msg){
 
-	// msgs: mavros_msgs/batteryStatus
 	battery_percentage = msg->remaining;
-	// ROS_INFO("the status of the battery is: %lf", battery_percentage);
+	// ROS_WARN("the status of the battery is: %f", battery_percentage);
+
 }
 
 
