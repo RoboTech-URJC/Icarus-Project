@@ -12,10 +12,12 @@
 | turn to local point  | turn to a point in the local map | `public`|`IcarusDriver::void turnLocalTo(double roll, double pitch, double yaw);`|
 | is armed | check if the drone is armed |`public`|`bool IcarusDriver::getArmStatus()`|
 | battery status | check battery status |`public`|`float IcarusDriver::getBatteryStatus()`|
+| local altitude | check local altitude |`public`|`float IcarusDriver:::getLocalAltitude()`|
 | Init parameters | inicialization of parameters | `private`| `void IcarusDriver::initParams();`|
 | ack notifier | notify an external serial port device |`private`|`void IcarusDriver::notifyAck(std::string msg)`|
-| is armed callback | notify an external serial port device |`private`|`void IcarusDriver::isArmedCallback(const mavros_msgs::State::ConstPtr& msg);`|
-| battery status callback | notify an external serial port device |`private`|`void IcarusDriver::batteryStatusCallback(const mavros_msgs::BatteryStatus::ConstPtr& msg);`|
+| is armed callback | notify an external serial port device |`private`|`void IcarusDriver::isArmedCb(const mavros_msgs::State::ConstPtr& msg);`|
+| battery status callback | notify an external serial port device |`private`|`void IcarusDriver::batteryStatusCb(const sensor_msgs::BatteryState::ConstPtr& msg);`|
+| local altitude callback | notify an external serial port device |`private`|`void IcarusDriver::localAltitudeCb(const mavros_msgs::Altitude::ConstPtr& msg);`|
 
 
 
