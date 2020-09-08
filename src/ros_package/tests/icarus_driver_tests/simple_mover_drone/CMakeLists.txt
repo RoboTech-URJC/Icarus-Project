@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(up_down)
+cmake_minimum_required(VERSION 2.8.3)
+project(simple_mover_drone)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -9,13 +9,13 @@ project(up_down)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   boca_negra
+  boca_negra_msgs
   geometry_msgs
   icarus_driver
   mavros_msgs
-  sensor_msgs
-  px4_msgs
   roscpp
   std_msgs
+  roslint
 )
 
 ## System dependencies are found with CMake's conventions
@@ -75,7 +75,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
+#   geometry_msgs#   mavros_msgs#   std_msgs
 # )
 
 ################################################
@@ -109,8 +109,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES up_down
-#  CATKIN_DEPENDS boca_negra geometry_msgs icarus_driver mavros_msgs roscpp std_msgs px4_msgs sensor_msgs
+#  LIBRARIES simple_mover_drone
+#  CATKIN_DEPENDS boca_negra geometry_msgs icarus_driver mavros_msgs roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -121,15 +121,14 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-	include
-	${catkin_INCLUDE_DIRS}
+  include
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-  src/${PROJECT_NAME}/up_down_hfsm.cpp
+  src/${PROJECT_NAME}/HFSM.cpp
 )
-
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
@@ -141,9 +140,11 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 
-add_executable(${PROJECT_NAME}_node src/up_down_executor.cpp)
-target_link_libraries(up_down_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+add_executable(hfsm_mover_node src/hfsm_executor.cpp)
+target_link_libraries(hfsm_mover_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
+add_executable(mover_node src/mover.cpp)
+target_link_libraries(mover_node ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -160,6 +161,11 @@ target_link_libraries(up_down_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 #   ${catkin_LIBRARIES}
 # )
 
+roslint_cpp(
+  src/simple_mover_drone/HFSM.cpp include/simple_mover_drone/HFSM.h
+  src/hfsm_executor.cpp
+)
+
 #############
 ## Install ##
 #############
@@ -169,7 +175,7 @@ target_link_libraries(up_down_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# catkin_install_python(PROGRAMS
+# install(PROGRAMS
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
@@ -207,7 +213,7 @@ target_link_libraries(up_down_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_up_down.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_simple_mover_drone.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

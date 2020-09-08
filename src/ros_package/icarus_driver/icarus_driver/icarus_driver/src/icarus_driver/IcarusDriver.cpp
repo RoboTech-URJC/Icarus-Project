@@ -115,12 +115,6 @@ void
 IcarusDriver::isArmedCb(const mavros_msgs::State::ConstPtr& msg){
 
 	IcarusDriver::is_armed_ = msg->armed;
-
-	// if (is_armed) {
-	//   ROS_WARN("The drone is ARMED");
-   //  } else {
-	//   ROS_WARN("The drone is DISARMED");
-   // }
 }
 
 
@@ -128,14 +122,12 @@ void
 IcarusDriver::batteryStatusCb(const sensor_msgs::BatteryState::ConstPtr& msg){
 
 	battery_percentage_ = msg->percentage;
-	// ROS_WARN("the status of the battery is: %f", battery_percentage_);
 }
 
 void
 IcarusDriver::localAltitudeCb(const mavros_msgs::Altitude::ConstPtr& msg){
 
 	IcarusDriver::local_altitude_ = msg->local;
-	// ROS_WARN("current local altitude: %f", local_altitude);
 }
 
 
