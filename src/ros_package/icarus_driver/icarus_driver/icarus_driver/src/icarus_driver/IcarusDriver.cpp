@@ -21,9 +21,8 @@
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/State.h>
-#include <mavros_msgs/BatteryStatus.h>
-#include <px4_msgs/BatteryStatus.h>
 #include <sensor_msgs/BatteryState.h>
+#include <mavros_msgs/Altitude.h>
 #include <std_msgs/String.h>
 #include "icarus_driver_msgs/TargetPose.h"
 
@@ -40,8 +39,9 @@ IcarusDriver::IcarusDriver():
   initParams();
 
   ack_notifier_ = nh_.advertise<std_msgs::String>("/icarus_driver/ack_notify", 1);
-  is_armed_sub_ = nh_.subscribe(is_armed_topic_, 1, &IcarusDriver::isArmedCallback, this);
-  battery_status_sub_ = nh_.subscribe(battery_status_topic_, 1, &IcarusDriver::batteryStatusCallback, this);
+  is_armed_sub_ = nh_.subscribe(is_armed_topic_, 1, &IcarusDriver::isArmedCb, this);
+  battery_status_sub_ = nh_.subscribe(battery_status_topic_, 1, &IcarusDriver::batteryStatusCb, this);
+  local_altitude_info_sub_ = nh_.subscribe(local_altitude_info_topic_, 1, &IcarusDriver::localAltitudeCb, this);
 
   ROS_INFO("%s", " *** ICARUS DRONE OPERATING *** ");
 
@@ -112,12 +112,12 @@ IcarusDriver::armDisarm(int arm)
 
 
 void
-IcarusDriver::isArmedCallback(const mavros_msgs::State::ConstPtr& msg){
+IcarusDriver::isArmedCb(const mavros_msgs::State::ConstPtr& msg){
 
-	is_armed = msg->armed;
+	IcarusDriver::is_armed_ = msg->armed;
 
 	// if (is_armed) {
-	  // ROS_WARN("The drone is ARMED");
+	//   ROS_WARN("The drone is ARMED");
    //  } else {
 	//   ROS_WARN("The drone is DISARMED");
    // }
@@ -125,12 +125,19 @@ IcarusDriver::isArmedCallback(const mavros_msgs::State::ConstPtr& msg){
 
 
 void
-IcarusDriver::batteryStatusCallback(const mavros_msgs::BatteryStatus::ConstPtr& msg){
+IcarusDriver::batteryStatusCb(const sensor_msgs::BatteryState::ConstPtr& msg){
 
-	battery_percentage = msg->remaining;
-	// ROS_WARN("the status of the battery is: %f", battery_percentage);
-
+	battery_percentage_ = msg->percentage;
+	// ROS_WARN("the status of the battery is: %f", battery_percentage_);
 }
+
+void
+IcarusDriver::localAltitudeCb(const mavros_msgs::Altitude::ConstPtr& msg){
+
+	IcarusDriver::local_altitude_ = msg->local;
+	// ROS_WARN("current local altitude: %f", local_altitude);
+}
+
 
 
 void
@@ -273,6 +280,7 @@ IcarusDriver::initParams()
   land_srv_ = "/mavros/cmd/land";
   is_armed_topic_ = "/mavros/state";
   battery_status_topic_ = "/mavros/battery";
+  local_altitude_info_topic_ = "/mavros/altitude";
 
 
   nh_.param("set_mode_srv", set_mode_srv_, set_mode_srv_);
@@ -282,8 +290,7 @@ IcarusDriver::initParams()
   nh_.param("land_srv", land_srv_, land_srv_);
   nh_.param("is_armed_topic_", is_armed_topic_, is_armed_topic_);
   nh_.param("battery_status_topic_", battery_status_topic_, battery_status_topic_);
-
+  nh_.param("altitude_info_topic_", local_altitude_info_topic_, local_altitude_info_topic_);
 
 }
-
 };  // namespace icarus_driver

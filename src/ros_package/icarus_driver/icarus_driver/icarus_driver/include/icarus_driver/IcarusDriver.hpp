@@ -20,9 +20,8 @@
 #include <string>
 #include <ros/ros.h>
 #include <mavros_msgs/State.h>
-#include <mavros_msgs/BatteryStatus.h>
-#include <px4_msgs/BatteryStatus.h>
 #include <sensor_msgs/BatteryState.h>
+#include <mavros_msgs/Altitude.h>
 
 namespace icarus_driver
 {
@@ -40,27 +39,32 @@ namespace icarus_driver
     void turnLocalTo(double roll, double pitch, double yaw);
 
 	//revise inline functions in case code style conflicts
-	float getBatteryPercentage(){return battery_percentage;};
-	bool getArmStatus(){return is_armed;};
+	float getBatteryPercentage(){return battery_percentage_;};
+	bool getArmStatus(){return is_armed_;};
+	float getLocalAltitude(){return local_altitude_;};
+
+
 
   private:
     void initParams();
     void notifyAck(std::string msg);  // notify if last command wass succesfully or not
-	void isArmedCallback(const mavros_msgs::State::ConstPtr& msg);
-	void batteryStatusCallback(const mavros_msgs::BatteryStatus::ConstPtr& msg);
+	void isArmedCb(const mavros_msgs::State::ConstPtr& msg);
+	void batteryStatusCb(const sensor_msgs::BatteryState::ConstPtr& msg);
+	void localAltitudeCb(const mavros_msgs::Altitude::ConstPtr& msg);
 
     ros::NodeHandle nh_;
 
     ros::Publisher ack_notifier_;
 	ros::Subscriber is_armed_sub_;
 	ros::Subscriber battery_status_sub_;
+	ros::Subscriber local_altitude_info_sub_;
 
-	bool is_armed;
-	float battery_percentage;
+	bool is_armed_;
+	float battery_percentage_, local_altitude_;
 
   protected:
     std::string set_mode_srv_, arm_disarm_srv_, takeoff_srv_, local_pose_topic_,
-      local_pose_setter_topic_, land_srv_, is_armed_topic_, battery_status_topic_;
+      local_pose_setter_topic_, land_srv_, is_armed_topic_, battery_status_topic_, local_altitude_info_topic_;
   };
 };  //namespace icarus_driver
 

@@ -18,6 +18,7 @@
 	<arg name="land_srv" default="/icarus_driver/mover_local_srv" />
 	<arg name="is_armed_topic" default="/mavros/state" />
 	<arg name="battery_status_topic" default="/mavros/battery" />
+	<arg name="local_altitude_info_topic" default="/mavros/altitude" />
 
 	<!-- launch main Icarus Driver nodes -->
 
@@ -26,6 +27,7 @@
 		<param name="local_pose_setter_topic" value="$(arg local_pose_setter_topic)" />
 		<param name="is_armed_topic" value="$(arg is_armed_topic)" />
 		<param name="battery_status_topic" value="$(arg battery_status_topic)" />
+		<param name="local_altitude_info_topic" value="$(arg local_altitude_info_topic)" />
 	</node>
 
 	<!--
