@@ -39,10 +39,9 @@ namespace icarus_driver
     void turnLocalTo(double roll, double pitch, double yaw);
 
 	//revise inline functions in case code style conflicts
-	float getBatteryPercentage(){return battery_percentage_;};
-	bool getArmStatus(){return is_armed_;};
-	float getLocalAltitude(){return local_altitude_;};
-
+	float getBatteryPercentage(){return droneStatus.battery_percentage_;};
+	bool getArmStatus(){return droneStatus.is_armed_;};
+	float getLocalAltitude(){return droneStatus.local_altitude_;};
 
 
   private:
@@ -52,6 +51,14 @@ namespace icarus_driver
 	void batteryStatusCb(const sensor_msgs::BatteryState::ConstPtr& msg);
 	void localAltitudeCb(const mavros_msgs::Altitude::ConstPtr& msg);
 
+	struct
+	{
+		bool is_armed_;
+		float battery_percentage_;
+		float local_altitude_;
+	} droneStatus;
+
+
     ros::NodeHandle nh_;
 
     ros::Publisher ack_notifier_;
@@ -59,8 +66,8 @@ namespace icarus_driver
 	ros::Subscriber battery_status_sub_;
 	ros::Subscriber local_altitude_info_sub_;
 
-	bool is_armed_;
-	float battery_percentage_, local_altitude_;
+
+
 
   protected:
     std::string set_mode_srv_, arm_disarm_srv_, takeoff_srv_, local_pose_topic_,

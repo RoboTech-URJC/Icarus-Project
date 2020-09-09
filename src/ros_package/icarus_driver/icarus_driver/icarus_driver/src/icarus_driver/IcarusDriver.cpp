@@ -114,20 +114,20 @@ IcarusDriver::armDisarm(int arm)
 void
 IcarusDriver::isArmedCb(const mavros_msgs::State::ConstPtr& msg){
 
-	IcarusDriver::is_armed_ = msg->armed;
+	droneStatus.is_armed_ = msg->armed;
 }
 
 
 void
 IcarusDriver::batteryStatusCb(const sensor_msgs::BatteryState::ConstPtr& msg){
 
-	battery_percentage_ = msg->percentage;
+	droneStatus.battery_percentage_ = msg->percentage;
 }
 
 void
 IcarusDriver::localAltitudeCb(const mavros_msgs::Altitude::ConstPtr& msg){
 
-	IcarusDriver::local_altitude_ = msg->local;
+	droneStatus.local_altitude_ = msg->local;
 }
 
 
