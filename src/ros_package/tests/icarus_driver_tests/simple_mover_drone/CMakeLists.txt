@@ -10,9 +10,7 @@ project(simple_mover_drone)
 find_package(catkin REQUIRED COMPONENTS
   boca_negra
   boca_negra_msgs
-  geometry_msgs
   icarus_driver
-  mavros_msgs
   roscpp
   std_msgs
   roslint

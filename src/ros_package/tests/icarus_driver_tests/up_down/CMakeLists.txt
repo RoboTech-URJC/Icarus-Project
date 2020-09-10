@@ -10,11 +10,7 @@ project(up_down)
 find_package(catkin REQUIRED COMPONENTS
   boca_negra
   boca_negra_msgs
-  geometry_msgs
   icarus_driver
-  mavros_msgs
-  sensor_msgs
-  px4_msgs
   roscpp
   std_msgs
 )
