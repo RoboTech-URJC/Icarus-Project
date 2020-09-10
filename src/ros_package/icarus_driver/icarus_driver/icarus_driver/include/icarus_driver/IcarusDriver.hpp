@@ -19,6 +19,9 @@
 
 #include <string>
 #include <ros/ros.h>
+#include <mavros_msgs/State.h>
+#include <sensor_msgs/BatteryState.h>
+#include <mavros_msgs/Altitude.h>
 
 namespace icarus_driver
 {
@@ -34,20 +37,41 @@ namespace icarus_driver
 	void land();
     void moveLocalTo(double x, double y, double z);
     void turnLocalTo(double roll, double pitch, double yaw);
-	//void wachdog(double time); //delay time waiting in a certain point
+
+	//revise inline functions in case code style conflicts
+	float getBatteryPercentage(){return droneStatus.battery_percentage_;};
+	bool getArmStatus(){return droneStatus.is_armed_;};
+	float getLocalAltitude(){return droneStatus.local_altitude_;};
+
 
   private:
     void initParams();
     void notifyAck(std::string msg);  // notify if last command wass succesfully or not
+	void isArmedCb(const mavros_msgs::State::ConstPtr& msg);
+	void batteryStatusCb(const sensor_msgs::BatteryState::ConstPtr& msg);
+	void localAltitudeCb(const mavros_msgs::Altitude::ConstPtr& msg);
+
+	struct
+	{
+		bool is_armed_;
+		float battery_percentage_;
+		float local_altitude_;
+	} droneStatus;
+
 
     ros::NodeHandle nh_;
 
-
     ros::Publisher ack_notifier_;
+	ros::Subscriber is_armed_sub_;
+	ros::Subscriber battery_status_sub_;
+	ros::Subscriber local_altitude_info_sub_;
+
+
+
 
   protected:
     std::string set_mode_srv_, arm_disarm_srv_, takeoff_srv_, local_pose_topic_,
-      local_pose_setter_topic_, land_srv_;
+      local_pose_setter_topic_, land_srv_, is_armed_topic_, battery_status_topic_, local_altitude_info_topic_;
   };
 };  //namespace icarus_driver
 
