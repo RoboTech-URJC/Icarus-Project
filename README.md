@@ -14,5 +14,5 @@ It is an autonomous drone which is able of avoiding obstacles and detecting othe
 
 
 <p align="center">
-  <img width="700" height="360" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/drone1.png">
+  <img width="450" height="360" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/drone1.jpeg">
 </p>
