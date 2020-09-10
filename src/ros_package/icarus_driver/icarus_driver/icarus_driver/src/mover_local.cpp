@@ -24,7 +24,7 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include "tf2_ros/transform_listener.h"
 #include "icarus_driver_msgs/TargetPose.h"
-#include "icarus_driver/IcarusDriver.hpp"
+#include "icarus_driver/IcarusDriver.h"
 #include "boca_negra/Bocanegra.hpp"
 
 #define HZ 10

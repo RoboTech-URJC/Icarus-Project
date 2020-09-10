@@ -53,31 +53,19 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>boca_negra</build_depend>
-  <build_depend>geometry_msgs</build_depend>
   <build_depend>icarus_driver</build_depend>
-  <build_depend>mavros_msgs</build_depend>
-  <build_depend>px4_msgs</build_depend>
-  <build_depend>sensor_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>boca_negra_msgs</build_depend>
 
   <build_export_depend>boca_negra</build_export_depend>
-  <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>icarus_driver</build_export_depend>
-  <build_export_depend>mavros_msgs</build_export_depend>
-  <build_export_depend>px4_msgs</build_export_depend>
-  <build_export_depend>sensor_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>boca_negra_msgs</build_export_depend>
 
   <exec_depend>boca_negra</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>icarus_driver</exec_depend>
-  <exec_depend>mavros_msgs</exec_depend>
-  <exec_depend>px4_msgs</exec_depend>
-  <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>boca_negra_msgs</exec_depend>

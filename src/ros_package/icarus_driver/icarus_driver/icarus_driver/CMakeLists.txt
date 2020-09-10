@@ -19,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
   boca_negra
   geometry_msgs
   icarus_driver_msgs
+  roslint
 )
 
 ## System dependencies are found with CMake's conventions
@@ -165,6 +166,10 @@ target_link_libraries(mover_local_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
+
+roslint_cpp(
+  src/icarus_driver/IcarusDriver.cpp include/icarus_driver/IcarusDriver.h
+)
 
 #############
 ## Install ##

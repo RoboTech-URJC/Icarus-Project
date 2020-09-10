@@ -15,7 +15,6 @@
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
 #include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
 #include "simple_mover_drone/HFSM.h"
 
 namespace simple_mover_drone
@@ -31,9 +30,7 @@ HFSM::HFSM()
   target_altitude_ = 3.0;
   target_x_ = 3.0;
   iterations_ = 0;
-  drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &HFSM::droneStateCb, this);
   mover_local_sub_ = nh_.subscribe("/icarus_driver/mover_local/finished", 1, &HFSM::moverLocalCb, this);
-  local_pos_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(local_pos_topic_, 1);
 }
 
 void
@@ -153,12 +150,6 @@ HFSM::initParams()
 }
 
 void
-HFSM::droneStateCb(const mavros_msgs::State::ConstPtr & msg)
-{
-  drone_state_ = *msg;
-}
-
-void
 HFSM::moverLocalCb(const std_msgs::Empty & msg)
 {
   mover_local_finished_ = true;
@@ -248,7 +239,7 @@ HFSM::init2arm()
 bool
 HFSM::arm2takeoff()
 {
-  return drone_state_.armed;
+  return getStatus().is_armed;
 }
 
 bool

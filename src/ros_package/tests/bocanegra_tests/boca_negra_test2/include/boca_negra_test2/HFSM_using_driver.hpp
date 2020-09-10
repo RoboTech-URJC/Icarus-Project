@@ -22,7 +22,7 @@
 #include <mavros_msgs/State.h>
 #include <geometry_msgs/PoseStamped.h>
 #include "boca_negra/Bocanegra.hpp"
-#include "icarus_driver/IcarusDriver.hpp"
+#include "icarus_driver/IcarusDriver.h"
 
 namespace boca_negra_test2
 {
