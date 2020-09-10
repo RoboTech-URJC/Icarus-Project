@@ -17,6 +17,10 @@
 #include "up_down/up_down_hfsm.hpp"
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <mavros_msgs/State.h>
+#include <mavros_msgs/Altitude.h>
+#include <sensor_msgs/BatteryState.h>
+#include "icarus_driver/IcarusDriver.hpp"
 
 namespace up_down
 {
@@ -120,6 +124,7 @@ UpDownHFSM::initCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Init");
 	setMode("OFFBOARD");
+
 }
 
 void
@@ -127,6 +132,7 @@ UpDownHFSM::armCodeOnce()
 {
 	ROS_WARN("State [%s]\n", "Arm");
 	armDisarm(1);
+
 }
 
 void
@@ -142,6 +148,8 @@ void
 UpDownHFSM::takeoffCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Takeoff");
+	ROS_WARN("altitude of the drone: %f", getLocalAltitude());
+
 }
 
 void
@@ -155,6 +163,7 @@ void
 UpDownHFSM::landCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Land");
+	ROS_WARN("the status of the battery is: %f", getBatteryPercentage());
 }
 
 

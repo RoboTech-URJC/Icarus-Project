@@ -21,6 +21,7 @@
 #include <ros/ros.h>
 #include <mavros_msgs/State.h>
 #include <mavros_msgs/Altitude.h>
+#include <sensor_msgs/BatteryState.h>
 #include <std_msgs/Empty.h>
 #include "boca_negra/Bocanegra.hpp"
 #include "icarus_driver/IcarusDriver.hpp"
