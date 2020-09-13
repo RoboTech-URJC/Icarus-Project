@@ -15,12 +15,6 @@
 /* Author: Pablo Castellanos p4b5git@gmail.com */
 
 #include "up_down/up_down_hfsm.hpp"
-#include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
-#include <mavros_msgs/State.h>
-#include <mavros_msgs/Altitude.h>
-#include <sensor_msgs/BatteryState.h>
-#include "icarus_driver/IcarusDriver.hpp"
 
 namespace up_down
 {
@@ -31,10 +25,8 @@ UpDownHFSM::UpDownHFSM()
 	code_once_executed_(false),
 	mover_local_finished_(false)
 {
-	initParams();
 	target_altitude_ = 5.0;
 	target_x_ = 3.0;
-	drone_state_sub_ = nh_.subscribe(drone_state_topic_, 1, &UpDownHFSM::droneStateCb, this);
 	mover_local_sub_ = nh_.subscribe("/icarus_driver/mover_local/finished", 1, &UpDownHFSM::moverLocalCb, this);
 }
 
@@ -100,20 +92,6 @@ UpDownHFSM::step()
 }
 
 void
-UpDownHFSM::initParams()
-{
-	drone_state_topic_ = "/mavros/state";
-
-	nh_.param("drone_state_topic", drone_state_topic_, drone_state_topic_);
-}
-
-void
-UpDownHFSM::droneStateCb(const mavros_msgs::State::ConstPtr & msg)
-{
-	drone_state_ = *msg;
-}
-
-void
 UpDownHFSM::moverLocalCb(const std_msgs::Empty & msg)
 {
 	mover_local_finished_ = true;
@@ -148,7 +126,6 @@ void
 UpDownHFSM::takeoffCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Takeoff");
-	ROS_WARN("altitude of the drone: %f", getLocalAltitude());
 
 }
 
@@ -163,7 +140,6 @@ void
 UpDownHFSM::landCodeIterative()
 {
 	ROS_INFO("State [%s] Code Iterative\n", "Land");
-	ROS_WARN("the status of the battery is: %f", getBatteryPercentage());
 }
 
 
@@ -176,7 +152,7 @@ UpDownHFSM::init2arm()
 bool
 UpDownHFSM::arm2takeoff()
 {
-	return drone_state_.armed;
+	return getStatus().is_armed;
 }
 
 bool

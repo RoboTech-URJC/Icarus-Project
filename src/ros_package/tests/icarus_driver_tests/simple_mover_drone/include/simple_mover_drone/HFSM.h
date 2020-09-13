@@ -19,11 +19,9 @@
 
 #include <string>
 #include <ros/ros.h>
-#include <mavros_msgs/State.h>
-#include <mavros_msgs/Altitude.h>
 #include <std_msgs/Empty.h>
 #include "boca_negra/Bocanegra.hpp"
-#include "icarus_driver/IcarusDriver.hpp"
+#include "icarus_driver/IcarusDriver.h"
 
 namespace simple_mover_drone
 {
@@ -36,7 +34,6 @@ public:
 
 private:
   void initParams();
-  void droneStateCb(const mavros_msgs::State::ConstPtr & msg);
   void moverLocalCb(const std_msgs::Empty & msg);
 
   /* -------------- */

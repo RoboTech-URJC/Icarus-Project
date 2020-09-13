@@ -17,7 +17,6 @@
 #include <ros/ros.h>
 #include "up_down/up_down_hfsm.hpp"
 
-
 #define HZ 5
 
 int
