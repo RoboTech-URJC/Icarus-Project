@@ -11,9 +11,9 @@
 
 It is an autonomous drone which is able of avoiding obstacles and detecting other drones. The main functionality of this drone is being able to shoot down others drones on flight
 
-## Contributions
+## Contributions Guidelines
 
-Do you want to contribute to our project? Check out our guidelines to do: ![CONTRIBUTING](https://github.com/RoboTech-URJC/Icarus-Project/blob/master/CONTRIBUTING.md)
+Do you want to contribute to our project? Check out our guidelines before you contribute: ![CONTRIBUTING](https://github.com/RoboTech-URJC/Icarus-Project/blob/master/CONTRIBUTING.md)
 
 
 <p align="center">
