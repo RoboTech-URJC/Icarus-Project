@@ -1,4 +1,11 @@
 # Lights Controller
+
+
+[![Hardware](https://img.shields.io/static/v1.svg?label=Hardware&message=Tested&color=0ca017&style=flat-square)](https://github.com/RoboTech-URJC/Icarus-Project/blob/master/CONTRIBUTING.md)&nbsp;
+[![Version](https://img.shields.io/static/v1.svg?label=Version&message=v1.0&color=0871a9&style=flat-square)](https://github.com/RoboTech-URJC/Icarus-Project/blob/master/CONTRIBUTING.md)&nbsp;
+
+
+
 Lights controller has been complete designed for controlling 4 RGB LED raws by pairs (head and tail of the drone), in order to provide a better ground-air visualization  with our drone and know at real time what the drone is doing inside its hardware
 ### Hardware
 Hardware consist of a PCB, 12 transistors **2N2222** , 12 resistors **2kOhm** and **Arduino Nano** which works as the semi-embedded micro-controller
