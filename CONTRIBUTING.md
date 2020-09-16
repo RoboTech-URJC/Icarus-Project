@@ -14,7 +14,7 @@
 ### take test seriusly
 
 - compile your changes `catkin_make`, preferably using `catkin_make -j 1`
-- pass style test `catkin_make tests`
+- pass style test `catkin_make roslint`
 
 > KEEP IN MIND: your code must to pass CI, so only the code that passed will be accepted.
 

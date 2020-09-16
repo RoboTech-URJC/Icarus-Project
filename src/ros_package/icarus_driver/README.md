@@ -2,7 +2,6 @@
 
 #### API of Icarus driver
 
-
 | NAME  | DESCRIPTION | ACESS | FUNCTION |
 | -------------| ------------- | ------------- |------------- |
 | set mode  | set the mode you want to operate with the drone | `public` |`void IcarusDriver::SetMode(std::string mode)`|
@@ -10,19 +9,24 @@
 | take off  | take off to a preorder altitude  |`public` | `void IcarusDriver::takeoff(double alt)`|
 | move to local point  | move to a point in the local map | `public`|`void IcarusDriver::moveLocalTo(double x, double y,double z)`|
 | turn to local point  | turn to a point in the local map | `public`|`IcarusDriver::void turnLocalTo(double roll, double pitch, double yaw);`|
-| is armed | check if the drone is armed |`public`|`bool IcarusDriver::getArmStatus()`|
-| battery status | check battery status |`public`|`float IcarusDriver::getBatteryStatus()`|
-| local altitude | check local altitude |`public`|`float IcarusDriver:::getLocalAltitude()`|
+| get status | get Icarus drone status |`public`|`StatusType IcarusDriver::getArmStatus()`|
 | Init parameters | inicialization of parameters | `private`| `void IcarusDriver::initParams();`|
 | ack notifier | notify an external serial port device |`private`|`void IcarusDriver::notifyAck(std::string msg)`|
-| is armed callback | notify an external serial port device |`private`|`void IcarusDriver::isArmedCb(const mavros_msgs::State::ConstPtr& msg);`|
+| mavros state callback | notify an external serial port device |`private`|`void IcarusDriver::droneStateCb(const mavros_msgs::State::ConstPtr& msg);`|
 | battery status callback | notify an external serial port device |`private`|`void IcarusDriver::batteryStatusCb(const sensor_msgs::BatteryState::ConstPtr& msg);`|
-| local altitude callback | notify an external serial port device |`private`|`void IcarusDriver::localAltitudeCb(const mavros_msgs::Altitude::ConstPtr& msg);`|
-
-
-
 
 > TODO: emergency_land(), move_global_to(), watchdog()
+
+#### Icarus Driver Types:
+
+```
+typedef struct StatusType StatusType;
+struct StatusType
+{
+  bool is_armed;
+  float battery_percentage;
+};
+```
 
 # BOCANEGRA
 
@@ -66,8 +70,8 @@ Bocanegra is a state machine conceived specially for this project and addressed 
 
 to begin to use our implementation, follow these steps:
 
- 1. at /Firmware run `Tools/gazebo_sitl_multiple_run.sh -n 1`
- 2. at your ws run `roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"`
+ 1. Run `~/Firmware/Tools/gazebo_sitl_multiple_run.sh -n 1`
+ 2. Run `roslaunch mavros px4.launch fcu_url:="udp://:14540@127.0.0.1:14557"`
  3. `roslaunch icarus_driver icarus_driver.launch`
  4. `rosrun simple_mover_drone hfsm_mover_node`
 

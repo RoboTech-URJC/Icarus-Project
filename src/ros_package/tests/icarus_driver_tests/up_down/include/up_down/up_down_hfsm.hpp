@@ -17,14 +17,11 @@
 #ifndef UP_DOWN__HFSM_HPP_
 #define UP_DOWN__HFSM_HPP_
 
-#include <string>
 #include <ros/ros.h>
-#include <mavros_msgs/State.h>
-#include <mavros_msgs/Altitude.h>
-#include <sensor_msgs/BatteryState.h>
 #include <std_msgs/Empty.h>
+#include <string>
 #include "boca_negra/Bocanegra.hpp"
-#include "icarus_driver/IcarusDriver.hpp"
+#include "icarus_driver/IcarusDriver.h"
 
 namespace up_down
 {
@@ -36,8 +33,6 @@ public:
 	void step();
 
 private:
-	void initParams();
-	void droneStateCb(const mavros_msgs::State::ConstPtr & msg);
 	void moverLocalCb(const std_msgs::Empty & msg);
 
 	/* -------------- */
@@ -72,8 +67,7 @@ private:
 	double target_altitude_, target_x_, target_angle;
 	float current_altitude_;
 	bool code_once_executed_, mover_local_finished_;
-	std::string drone_state_topic_, local_pos_topic_;
-	mavros_msgs::State drone_state_;
+	std::string drone_state_topic_, local_pos_topic_;;
 };
 };	// namespace up_down
 
