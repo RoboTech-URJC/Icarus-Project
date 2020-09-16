@@ -18,5 +18,5 @@ TAIL
 11 | B | LEFT & RIGHT
  
  # Schemes 
-<img src="/Electronic_Schemmes/LIGHTS/Scheme_pcb-drone-lights.png" width="500" height="250" >
-<img src="/Electronic_Schemmes/LIGHTS/PCB_top_layer.png" width="500" height="250" > 
+<img src="/Electronic_Schemmes/LIGHTS/Scheme_pcb-drone-lights.png" width="750" height="470" >
+<img src="/Electronic_Schemmes/LIGHTS/PCB_top_layer.png" width="600" height="450" > 
