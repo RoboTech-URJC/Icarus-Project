@@ -20,7 +20,7 @@
 #include <string>
 #include <ros/ros.h>
 #include <std_msgs/Empty.h>
-#include "boca_negra/Bocanegra.hpp"
+#include "boca_negra/Bocanegra.h"
 #include "icarus_driver/IcarusDriver.h"
 
 namespace simple_mover_drone

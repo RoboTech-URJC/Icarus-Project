@@ -169,6 +169,7 @@ target_link_libraries(mover_local_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 roslint_cpp(
   src/icarus_driver/IcarusDriver.cpp include/icarus_driver/IcarusDriver.h
+  src/mover_local.cpp
 )
 
 #############

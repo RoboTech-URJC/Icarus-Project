@@ -21,7 +21,7 @@
 #include <ros/ros.h>
 #include <mavros_msgs/State.h>
 #include <geometry_msgs/PoseStamped.h>
-#include "boca_negra/Bocanegra.hpp"
+#include "boca_negra/Bocanegra.h"
 
 namespace boca_negra_test2
 {

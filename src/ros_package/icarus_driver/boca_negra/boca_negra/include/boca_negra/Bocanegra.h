@@ -14,8 +14,8 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#ifndef BOCA_NEGRA__BOCA_NEGRA_HPP_
-#define BOCA_NEGRA__BOCA_NEGRA_HPP_
+#ifndef BOCA_NEGRA__BOCA_NEGRA_H
+#define BOCA_NEGRA__BOCA_NEGRA_H
 
 #include <string>
 #include <vector>
@@ -53,4 +53,4 @@ namespace boca_negra
 	};
 };	//namespace boca_negra
 
-#endif	// BOCA_NEGRA__BOCA_NEGRA_HPP_
+#endif	// BOCA_NEGRA__BOCA_NEGRA_H

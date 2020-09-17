@@ -18,7 +18,7 @@
 #include <string>
 #include <std_msgs/String.h>
 #include "icarus_driver/IcarusDriver.h"
-#include "boca_negra/Bocanegra.hpp"
+#include "boca_negra/Bocanegra.h"
 
 #define HZ 5
 
