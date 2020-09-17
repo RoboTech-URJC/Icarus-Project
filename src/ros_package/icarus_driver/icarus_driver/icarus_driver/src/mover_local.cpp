@@ -17,15 +17,15 @@
 #include <string>
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include "tf/tf.h"
 #include "tf/transform_datatypes.h"
 #include "tf/LinearMath/Matrix3x3.h"
 #include "tf2/convert.h"
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include "tf2_ros/transform_listener.h"
 #include "icarus_driver_msgs/TargetPose.h"
 #include "icarus_driver/IcarusDriver.h"
-#include "boca_negra/Bocanegra.hpp"
+#include "boca_negra/Bocanegra.h"
 
 #define HZ 10
 #define POSITION_MARGIN_ERROR 0.15
@@ -34,137 +34,139 @@
 class MoverLocal : public icarus_driver::IcarusDriver, boca_negra::Bocanegra
 {
 public:
-	MoverLocal()
-	:	IcarusDriver(), Bocanegra(), nh_("~"), tf_listener_(tf_buffer_),
-		finished_published_(false)
+  MoverLocal()
+  :
+  IcarusDriver(), Bocanegra(), nh_("~"), tf_listener_(tf_buffer_),
+  finished_published_(false)
 
-	{
-		local_pose_sub_ = nh_.subscribe(local_pose_topic_, 1, &MoverLocal::localPoseCb, this);
-		target_srv_ = nh_.advertiseService(
-			"/icarus_driver/mover_local_srv", &MoverLocal::moveToLocalPose, this);
-		finish_trigger_pub_ = nh_.advertise<std_msgs::Empty>(
-			"/icarus_driver/mover_local/finished", 1);
+  {
+    local_pose_sub_ = nh_.subscribe(local_pose_topic_, 1, &MoverLocal::localPoseCb, this);
+    target_srv_ = nh_.advertiseService(
+      "/icarus_driver/mover_local_srv", &MoverLocal::moveToLocalPose, this);
+    finish_trigger_pub_ = nh_.advertise<std_msgs::Empty>(
+      "/icarus_driver/mover_local/finished", 1);
 
-		mavros_local_pose_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(
-			local_pose_setter_topic_, 1);
-	}
+    mavros_local_pose_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(
+      local_pose_setter_topic_, 1);
+  }
 
-	void
-	update()
-	{
-		if (!isActive())
-			return;
+  void
+  update()
+  {
+    if (!isActive())
+      return;
 
-		std_msgs::Empty msg;
-		if (localTargetReached()) {
-			if (!finished_published_)
-				finish_trigger_pub_.publish(msg);
-			finished_published_ = true;
-		} else {
-			target_pos_.header.stamp = ros::Time::now();
-			mavros_local_pose_pub_.publish(target_pos_);
-		}
-	}
+    std_msgs::Empty msg;
+    if (localTargetReached())
+    {
+      if (!finished_published_)
+        finish_trigger_pub_.publish(msg);
+      finished_published_ = true;
+    }
+    else
+    {
+      target_pos_.header.stamp = ros::Time::now();
+      mavros_local_pose_pub_.publish(target_pos_);
+    }
+  }
 
 private:
-	bool
-	moveToLocalPose(icarus_driver_msgs::TargetPose::Request & req,
-		icarus_driver_msgs::TargetPose::Response & res)
-	{
-		finished_published_ = false;
+  bool
+  moveToLocalPose(icarus_driver_msgs::TargetPose::Request & req,
+    icarus_driver_msgs::TargetPose::Response & res)
+  {
+    finished_published_ = false;
 
-		std::string error;
-		geometry_msgs::TransformStamped src_frame2map;
+    std::string error;
+    geometry_msgs::TransformStamped src_frame2map;
 
-		target_pos_ = req.target_pose;
-		if (!tf_buffer_.canTransform(
-			"map", target_pos_.header.frame_id, ros::Time(0), ros::Duration(0.1), &error)) {
-			ROS_ERROR("%s", error.c_str());
-			res.success = false;
-			return false;
-		}
-		src_frame2map = tf_buffer_.lookupTransform("map", target_pos_.header.frame_id,
-			ros::Time(0), ros::Duration(0.2));
-		tf2::doTransform(target_pos_, target_pos_, src_frame2map);
-		setMode("OFFBOARD");
-		res.success = true;
-		return true;
-	}
+    target_pos_ = req.target_pose;
+    if (!tf_buffer_.canTransform(
+      "map", target_pos_.header.frame_id, ros::Time(0), ros::Duration(0.1), &error))
+    {
+      ROS_ERROR("%s", error.c_str());
+      res.success = false;
+      return false;
+    }
+    src_frame2map = tf_buffer_.lookupTransform("map", target_pos_.header.frame_id,
+    ros::Time(0), ros::Duration(0.2));
+    tf2::doTransform(target_pos_, target_pos_, src_frame2map);
+    setMode("OFFBOARD");
+    res.success = true;
+    return true;
+  }
 
-	bool
-	positionReached()
-	{
-		// Mirar que pasa si es nan
+  bool
+  positionReached()
+  {
+    return abs(current_pos_.pose.position.x - target_pos_.pose.position.x) <= POSITION_MARGIN_ERROR
+      && abs(current_pos_.pose.position.y - target_pos_.pose.position.y) <= POSITION_MARGIN_ERROR
+      && abs(current_pos_.pose.position.z - target_pos_.pose.position.z) <= POSITION_MARGIN_ERROR;
+  }
 
-		return abs(current_pos_.pose.position.x - target_pos_.pose.position.x) <= POSITION_MARGIN_ERROR
-			&& abs(current_pos_.pose.position.y - target_pos_.pose.position.y) <= POSITION_MARGIN_ERROR
-			&& abs(current_pos_.pose.position.z - target_pos_.pose.position.z) <= POSITION_MARGIN_ERROR;
-	}
+  bool
+  orientationReached()
+  {
+    double t_roll, t_pitch, t_yaw;
+    double c_roll, c_pitch, c_yaw;
 
-	bool
-	orientationReached()
-	{
-		// Mirar que pasa si es nan
+    // Compose quaternions:
 
-		double t_roll, t_pitch, t_yaw;
-		double c_roll, c_pitch, c_yaw;
+    tf::Quaternion t_q(target_pos_.pose.orientation.x, target_pos_.pose.orientation.y,
+      target_pos_.pose.orientation.z, target_pos_.pose.orientation.w);
 
-		// Compose quaternions:
+    tf::Quaternion c_q(current_pos_.pose.orientation.x, current_pos_.pose.orientation.y,
+      current_pos_.pose.orientation.z, current_pos_.pose.orientation.w);
 
-		tf::Quaternion t_q(target_pos_.pose.orientation.x, target_pos_.pose.orientation.y,
-			target_pos_.pose.orientation.z, target_pos_.pose.orientation.w);
+    tf::Matrix3x3(t_q).getRPY(t_roll, t_pitch, t_yaw);
+    tf::Matrix3x3(c_q).getRPY(c_roll, c_pitch, c_yaw);
 
-		tf::Quaternion c_q(current_pos_.pose.orientation.x, current_pos_.pose.orientation.y,
-			current_pos_.pose.orientation.z, current_pos_.pose.orientation.w);
+    return abs(t_roll - c_roll) <= ORIENTATION_MARGIN_ERROR
+      && abs(t_pitch - c_pitch) <= ORIENTATION_MARGIN_ERROR
+      && abs(t_yaw - c_yaw) <= ORIENTATION_MARGIN_ERROR;
+  }
 
-		tf::Matrix3x3(t_q).getRPY(t_roll, t_pitch, t_yaw);
-		tf::Matrix3x3(c_q).getRPY(c_roll, c_pitch, c_yaw);
+  bool
+  localTargetReached()
+  {
+    return positionReached() && orientationReached();
+  }
 
-		return abs(t_roll - c_roll) <= ORIENTATION_MARGIN_ERROR
-			&& abs(t_pitch - c_pitch) <= ORIENTATION_MARGIN_ERROR
-			&& abs(t_yaw - c_yaw) <= ORIENTATION_MARGIN_ERROR;
-	}
+  void
+  localPoseCb(const geometry_msgs::PoseStamped::ConstPtr & msg)
+  {
+    // Save drone global position
 
-	bool
-	localTargetReached()
-	{
-		return positionReached() && orientationReached();
-	}
+    current_pos_ = *msg;
+  }
 
-	void
-	localPoseCb(const geometry_msgs::PoseStamped::ConstPtr & msg)
-	{
-		// Save drone global position
+  ros::NodeHandle nh_;
+  ros::Subscriber local_pose_sub_;
+  ros::Publisher finish_trigger_pub_, mavros_local_pose_pub_;
+  ros::ServiceServer target_srv_;
 
-		current_pos_ = *msg;
-	}
+  tf2_ros::Buffer tf_buffer_;
+  tf2_ros::TransformListener tf_listener_;
 
-	ros::NodeHandle nh_;
-	ros::Subscriber local_pose_sub_;
-	ros::Publisher finish_trigger_pub_, mavros_local_pose_pub_;
-	ros::ServiceServer target_srv_;
+  geometry_msgs::PoseStamped current_pos_, target_pos_;
 
-	tf2_ros::Buffer tf_buffer_;
-	tf2_ros::TransformListener tf_listener_;
-
-	geometry_msgs::PoseStamped current_pos_, target_pos_;
-
-	bool finished_published_;
+  bool finished_published_;
 };
 
 int
 main(int argc, char **argv)
 {
-	ros::init(argc, argv, "mover_local_node");
+  ros::init(argc, argv, "mover_local_node");
 
-	MoverLocal ml;
+  MoverLocal ml;
 
-	ros::Rate loop_rate(HZ);
-	while (ros::ok()) {
-		ml.update();
-		ros::spinOnce();
-		loop_rate.sleep();
-	}
+  ros::Rate loop_rate(HZ);
+  while (ros::ok())
+  {
+    ml.update();
+    ros::spinOnce();
+    loop_rate.sleep();
+  }
 
-	return 0;
+  return 0;
 }

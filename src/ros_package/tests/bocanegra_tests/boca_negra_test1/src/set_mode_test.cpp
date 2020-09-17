@@ -16,7 +16,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/String.h>
-#include "boca_negra/Bocanegra.hpp"
+#include "boca_negra/Bocanegra.h"
 
 #define HZ 2
 

@@ -19,7 +19,7 @@
 #include <std_msgs/Bool.h>
 #include <mavros_msgs/State.h>
 #include "icarus_driver/IcarusDriver.h"
-#include "boca_negra/Bocanegra.hpp"
+#include "boca_negra/Bocanegra.h"
 
 #define HZ 5
 

@@ -14,7 +14,7 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#include "boca_negra/Bocanegra.hpp"
+#include "boca_negra/Bocanegra.h"
 #include <string>
 #include <ros/ros.h>
 #include <std_msgs/String.h>
