@@ -5,38 +5,77 @@ public:
 
   Lights()
   {
-    Lights::red_led = 3;
-    Lights::green_led = 5;
-    Lights::blue_led = 6;
+
+  // head lights
+    Lights::red_led_head = 3;
+    Lights::green_led_head = 5;
+    Lights::blue_led_head = 6;
+  //tail lights
+    Lights::red_led_tail = 9;
+    Lights::green_led_tail = 10;
+    Lights::blue_led_tail = 11;
 
     Lights::set_leds();
   }
 
   void
   run(char state){
-    if(state == 'a'){
-      
-      Lights::turn_off(Lights::red_led);
-      Lights::turn_on(Lights::green_led);
-      Lights::turn_off(Lights::blue_led);
-      
-    }else if(state == 'b'){
-      
-      Lights::turn_on(Lights::red_led);
-      Lights::turn_off(Lights::green_led);
-      Lights::turn_off(Lights::blue_led);
-      
-    }else if(state == 'c'){
-      
-      Lights::turn_on(Lights::blue_led);
-      Lights::turn_off(Lights::red_led);
-      Lights::turn_off(Lights::green_led);
-    }else if(state == 'p'){
-      Lights::turn_off(Lights::red_led);
-      Lights::turn_off(Lights::green_led);
-      Lights::turn_off(Lights::blue_led);
-      Lights::blink_led(Lights::blue_led, 5);
-    }
+
+  switch (state) {
+    case 'a': //activate/arm mode = green lights
+      Lights::turn_off(Lights::red_led_head);
+      Lights::turn_on(Lights::green_led_head);
+      Lights::turn_off(Lights::blue_led_head);
+
+      Lights::turn_off(Lights::red_led_tail);
+      Lights::turn_on(Lights::green_led_tail);
+      Lights::turn_off(Lights::blue_led_tail);
+
+    break;
+
+    case 'b':  //flying mode = blue lights
+      Lights::turn_on(Lights::red_led_head);
+      Lights::turn_off(Lights::green_led_head);
+      Lights::turn_off(Lights::blue_led_head);
+
+      Lights::turn_on(Lights::red_led_tail);
+      Lights::turn_off(Lights::green_led_tail);
+      Lights::turn_off(Lights::blue_led_tail);
+
+    break;
+    case 'c':  //warning =  red lights
+      Lights::turn_on(Lights::blue_led_head);
+      Lights::turn_off(Lights::red_led_head);
+      Lights::turn_off(Lights::green_led_head);
+
+      Lights::turn_on(Lights::blue_led_tail);
+      Lights::turn_off(Lights::red_led_tail);
+      Lights::turn_off(Lights::green_led_tail);
+
+    break;
+
+    case 'p':  // pulse = flash lights
+      Lights::turn_off(Lights::red_led_head);
+      Lights::turn_off(Lights::green_led_head);
+      Lights::turn_off(Lights::blue_led_head);
+
+      Lights::turn_off(Lights::red_led_tail);
+      Lights::turn_off(Lights::green_led_tail);
+      Lights::turn_off(Lights::blue_led_tail);
+
+      Lights::blink_led(Lights::blue_led_head, pulse_interval);
+
+    case 's':  // stop = turn off all lights
+      Lights::turn_off(Lights::red_led_head);
+      Lights::turn_off(Lights::green_led_head);
+      Lights::turn_off(Lights::blue_led_head);
+
+      Lights::turn_off(Lights::red_led_tail);
+      Lights::turn_off(Lights::green_led_tail);
+      Lights::turn_off(Lights::blue_led_tail);
+
+    break;
+  }
   }
 
   void
@@ -54,62 +93,73 @@ public:
 
 private:
 
-  int red_led;
-  int green_led;
-  int blue_led;
+  int red_led_head;
+  int green_led_head;
+  int blue_led_head;
+
+  int red_led_tail;
+  int green_led_tail;
+  int blue_led_tail;
+
+
+  int pulse_interval = 2; //interval of the flashing lights
+  char lights_status; //current status of lights
 
   void
   set_leds()
   {
-    pinMode(Lights::red_led, OUTPUT);
-    pinMode(Lights::green_led, OUTPUT);
-    pinMode(Lights::blue_led, OUTPUT);
+    pinMode(Lights::red_led_head, OUTPUT);
+    pinMode(Lights::green_led_head, OUTPUT);
+    pinMode(Lights::blue_led_head, OUTPUT);
+
+  pinMode(Lights::red_led_tail, OUTPUT);
+    pinMode(Lights::green_led_tail, OUTPUT);
+    pinMode(Lights::blue_led_tail, OUTPUT);
   }
 
-  void 
+  void
   turn_off(int pin_out)
   {
     digitalWrite(pin_out, LOW);
   }
 
-  void 
+  void
   turn_on(int pin_out)
   {
-    digitalWrite(pin_out, HIGH);    
+    digitalWrite(pin_out, HIGH);
   }
 
-  void 
+  void
   blink_led(int pin_out, float hertz)
-  { 
-    float interval = (1.0 / hertz) * 1000.0;
-    
-    turn_on(pin_out);
-    delay(interval);
-    
-    turn_off(pin_out);
-    delay(interval);
-      
+  {
+   float interval = (1.0 / hertz) * 1000.0;
+
+   turn_on(pin_out);
+   delay(interval);
+
+   turn_off(pin_out);
+   delay(interval);
   }
-  
+
 };
 
 Lights lights;
 
-void 
-setup() 
+void
+setup()
 {
   Serial.begin(9600);
 }
 
 char state = ' ';
 unsigned long t0;
-void 
-loop() 
+void
+loop()
 {
   /*
    * Implements reactive algorithm
    */
-  
+
   //read state
   t0 = millis();
   state = Serial.read();
@@ -117,5 +167,5 @@ loop()
   //exec state
   lights.run(state);
   lights.sleep(t0, 12.0);
-  
+
 }
