@@ -12,8 +12,8 @@ Lights behaviors ~ parameter of notifyAck [`std::string msg`]:
 - `a`: activate mode ~ green lights
 - `b`: flying mode ~ blue lights
 - `c`: warning mode ~ red lights
-- `d`: pulse mode ~ flash lights --- to control the interval time of each flash change the variable `int pulse_interval`
-
+- `p`: pulse mode ~ flash lights --- to control the interval time of each flash change the variable `int pulse_interval`
+- `s`: stop mode ~ turn off all lights
 
 
 ### Connections

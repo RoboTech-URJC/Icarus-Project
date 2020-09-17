@@ -5,11 +5,13 @@ public:
 
   Lights()
   {
+
+  // head lights
     Lights::red_led_head = 3;
     Lights::green_led_head = 5;
     Lights::blue_led_head = 6;
-
-  Lights::red_led_tail = 9;
+  //tail lights
+    Lights::red_led_tail = 9;
     Lights::green_led_tail = 10;
     Lights::blue_led_tail = 11;
 
@@ -18,53 +20,62 @@ public:
 
   void
   run(char state){
-    if(state == 'a'){   //activate/arm mode = green lights
 
-    lights_status = 'a';
+  switch (state) {
+    case 'a': //activate/arm mode = green lights
       Lights::turn_off(Lights::red_led_head);
       Lights::turn_on(Lights::green_led_head);
       Lights::turn_off(Lights::blue_led_head);
 
-    Lights::turn_off(Lights::red_led_tail);
-    Lights::turn_on(Lights::green_led_tail);
-    Lights::turn_off(Lights::blue_led_tail);
+      Lights::turn_off(Lights::red_led_tail);
+      Lights::turn_on(Lights::green_led_tail);
+      Lights::turn_off(Lights::blue_led_tail);
 
-   }else if(state == 'b'){  //flying mode = blue lights
+    break;
 
-    lights_status = 'b';
+    case 'b':  //flying mode = blue lights
       Lights::turn_on(Lights::red_led_head);
       Lights::turn_off(Lights::green_led_head);
       Lights::turn_off(Lights::blue_led_head);
 
-    Lights::turn_on(Lights::red_led_tail);
-    Lights::turn_off(Lights::green_led_tail);
-    Lights::turn_off(Lights::blue_led_tail);
+      Lights::turn_on(Lights::red_led_tail);
+      Lights::turn_off(Lights::green_led_tail);
+      Lights::turn_off(Lights::blue_led_tail);
 
-  }else if(state == 'c'){   //warning =  red lights
-
-    lights_status = 'c';
+    break;
+    case 'c':  //warning =  red lights
       Lights::turn_on(Lights::blue_led_head);
       Lights::turn_off(Lights::red_led_head);
       Lights::turn_off(Lights::green_led_head);
 
-    Lights::turn_on(Lights::blue_led_tail);
-    Lights::turn_off(Lights::red_led_tail);
-    Lights::turn_off(Lights::green_led_tail);
+      Lights::turn_on(Lights::blue_led_tail);
+      Lights::turn_off(Lights::red_led_tail);
+      Lights::turn_off(Lights::green_led_tail);
 
-  }else if(state == 'p'){   // pulse = flash lights
+    break;
 
-    lights_status = 'p';
+    case 'p':  // pulse = flash lights
       Lights::turn_off(Lights::red_led_head);
       Lights::turn_off(Lights::green_led_head);
       Lights::turn_off(Lights::blue_led_head);
 
-    Lights::turn_off(Lights::red_led_tail);
+      Lights::turn_off(Lights::red_led_tail);
       Lights::turn_off(Lights::green_led_tail);
       Lights::turn_off(Lights::blue_led_tail);
 
-
       Lights::blink_led(Lights::blue_led_head, pulse_interval);
-    }
+
+    case 's':  // stop = turn off all lights
+      Lights::turn_off(Lights::red_led_head);
+      Lights::turn_off(Lights::green_led_head);
+      Lights::turn_off(Lights::blue_led_head);
+
+      Lights::turn_off(Lights::red_led_tail);
+      Lights::turn_off(Lights::green_led_tail);
+      Lights::turn_off(Lights::blue_led_tail);
+
+    break;
+  }
   }
 
   void
@@ -121,15 +132,13 @@ private:
   void
   blink_led(int pin_out, float hertz)
   {
-  float interval = (1.0 / hertz) * 1000.0;
-  while (lights_status = 'p') {
+   float interval = (1.0 / hertz) * 1000.0;
 
-      turn_on(pin_out);
-      delay(interval);
+   turn_on(pin_out);
+   delay(interval);
 
-      turn_off(pin_out);
-      delay(interval);
-  }
+   turn_off(pin_out);
+   delay(interval);
   }
 
 };
