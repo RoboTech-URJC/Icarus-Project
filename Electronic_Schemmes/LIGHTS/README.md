@@ -36,7 +36,7 @@ TAIL
 11 | B |
 
 <p align="center">
-  <img width="500" height="250" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/lights_schema_resume.png">
+  <img width="500" height="350" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/lights_schema_resume.png">
 </p>
 
 
@@ -45,12 +45,12 @@ TAIL
  - Schema
 
 <p align="center">
-  <img width="500" height="250" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/Scheme_pcb-drone-lights.png">
+  <img width="500" height="350" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/Scheme_pcb-drone-lights.png">
 </p>
 
 
 - PCB layout
 
 <p align="center">
-  <img width="500" height="250" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/PCB_top_layer.png">
+  <img width="500" height="350" src="https://github.com/RoboTech-URJC/Icarus-Project/blob/master/docs/PCB_top_layer.png">
 </p>
