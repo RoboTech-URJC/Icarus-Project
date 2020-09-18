@@ -26,7 +26,10 @@ class SetMode : public boca_negra::Bocanegra
 {
 public:
   SetMode()
-  : boca_negra::Bocanegra(), nh_("~"), set_mode_topic_("/icarus_driver/set_mode")
+  :
+  boca_negra::Bocanegra(),
+  nh_("~"),
+  set_mode_topic_("/icarus_driver/set_mode")
   {
     current_mode_ = "";
     new_mode_ = "";
@@ -37,13 +40,16 @@ public:
   void
   update()
   {
-    if (isActive()) {
+    if (isActive())
+    {
       if (current_mode_ == new_mode_)
         return;
 
       current_mode_ = new_mode_;
       icarus_.setMode(new_mode_);
-    }else{
+    }
+    else
+    {
       current_mode_ = "";
       new_mode_ = "";
     }
@@ -52,7 +58,7 @@ public:
 private:
   void setModeCb(const std_msgs::String::ConstPtr & msg)
   {
-    new_mode_ = msg->data;
+  new_mode_ = msg->data;
   }
 
   ros::NodeHandle nh_;
@@ -69,7 +75,8 @@ main(int argc, char **argv)
   SetMode set_mode;
 
   ros::Rate rate = HZ;
-  while(ros::ok()){
+  while (ros::ok())
+  {
     set_mode.update();
     ros::spinOnce();
     rate.sleep();

@@ -6,8 +6,10 @@ from std_msgs.msg import String
 import serial
 import os
 
-#Global variable:
+# Global variable:
+
 NodeName = 'ack_notifier_node'
+
 
 class Notifier():
     def __init__(self):
@@ -28,22 +30,23 @@ class Notifier():
             self.raise_except()
 
     def callback(self, data):
-        #b = bytes(data.data)
+        # b = bytes(data.data)
+
         self.ser_.write(data.data)
 
     def raise_except(self):
         rospy.logerr("[%s] Ligths Handler Serial Port could not be opened\n", self.port_)
-        os.system("rosnode kill "+ NodeName)
+        os.system("rosnode kill " + NodeName)
 
 if __name__ == "__main__":
 
     rospy.init_node(NodeName)
 
-    rate = rospy.Rate(10) #10 Hz
+    rate = rospy.Rate(10)   # 10 Hz
     try:
 
         notifier = Notifier()
         rospy.spin()
 
     except KeyboardInterrupt:
-        pass;
+        pass
