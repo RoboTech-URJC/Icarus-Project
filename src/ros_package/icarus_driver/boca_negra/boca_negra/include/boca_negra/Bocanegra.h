@@ -14,8 +14,8 @@
 
 /* Author: Fernando González fergonzaramos@yahoo.es */
 
-#ifndef BOCA_NEGRA__BOCA_NEGRA_H
-#define BOCA_NEGRA__BOCA_NEGRA_H
+#ifndef BOCA_NEGRA_BOCANEGRA_H
+#define BOCA_NEGRA_BOCANEGRA_H
 
 #include <string>
 #include <vector>
@@ -25,32 +25,30 @@
 
 namespace boca_negra
 {
-	class Bocanegra
-	{
+class Bocanegra
+{
+public:
+  Bocanegra();
 
-	public:
-		Bocanegra();
+protected:
+  void activate(std::string node_name);
+  void deactivate(std::string node_name);
 
-	protected:
-		void activate(std::string node_name);
-		void deactivate(std::string node_name);
+  bool isActive();
 
-		bool isActive();
+private:
+  void statesCallback(const boca_negra_msgs::states::ConstPtr msg);
 
-	private:
-		void statesCallback(const boca_negra_msgs::states::ConstPtr msg);
+  bool isActive(std::string node_name);
 
-		bool isActive(std::string node_name);
+  ros::NodeHandle nh_;
 
-		ros::NodeHandle nh_;
+  ros::ServiceClient activate_client_service_;
+  ros::Subscriber states_sub_;
 
-		ros::ServiceClient activate_client_service_;
-		ros::Subscriber states_sub_;
+  std::vector<boca_negra_msgs::state>v_;
+  std::string this_node_;
+};
+};  // namespace boca_negra
 
-		std::vector<boca_negra_msgs::state>v_;
-		std::string this_node_;
-
-	};
-};	//namespace boca_negra
-
-#endif	// BOCA_NEGRA__BOCA_NEGRA_H
+#endif  // BOCA_NEGRA_BOCANEGRA_H
