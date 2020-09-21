@@ -158,6 +158,7 @@ target_link_libraries(states_listener ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 roslint_cpp(
   src/${PROJECT_NAME}/Bocanegra.cpp include/${PROJECT_NAME}/Bocanegra.h
+  src/states_listener.cpp
 )
 
 #############

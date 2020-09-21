@@ -27,7 +27,8 @@ class StListener
 {
 public:
   StListener()
-  : nh_("~")
+  :
+  nh_("~")
   {
     states_pub_ = nh_.advertise<boca_negra_msgs::states>("/boca_negra/states", 1);
     activate_server_srv_ = nh_.advertiseService(
@@ -45,30 +46,34 @@ public:
 private:
   bool
   change_state(boca_negra_msgs::state_change::Request  &req,
-              	boca_negra_msgs::state_change::Response &res)
+    boca_negra_msgs::state_change::Response &res)
   {
-  	bool finish = false;
-  	int i = 0;
-  	while (!finish && i < v_.size()) {
-  		finish = v_.at(i).node_name.data.compare(req.node_name.data) == 0;
+    bool finish = false;
+    int i = 0;
+    while (!finish && i < v_.size())
+    {
+      finish = v_.at(i).node_name.data.compare(req.node_name.data) == 0;
       if (finish)
         break;
       i++;
-  	}
+    }
 
-  	boca_negra_msgs::state s;
-  	if (finish) {
-  		v_.at(i).is_active = req.active;
-  	} else {
-  		s.node_name = req.node_name;
-  		s.is_active = req.active;
-  		v_.push_back(s);
-  	}
+    boca_negra_msgs::state s;
+    if (finish)
+    {
+      v_.at(i).is_active = req.active;
+    }
+    else
+    {
+      s.node_name = req.node_name;
+      s.is_active = req.active;
+      v_.push_back(s);
+    }
 
-  	res.node_name = req.node_name;
-  	res.active = req.active;
+    res.node_name = req.node_name;
+    res.active = req.active;
 
-  	return true;
+    return true;
   }
 
   ros::NodeHandle nh_;
@@ -82,12 +87,13 @@ private:
 int
 main(int argc, char **argv)
 {
-	ros::init(argc, argv, "states_listener_node");
+  ros::init(argc, argv, "states_listener_node");
 
   StListener st_listener;
 
   ros::Rate loop_rate(HZ);
-  while (ros::ok()) {
+  while (ros::ok())
+  {
     st_listener.update();
     ros::spinOnce();
     loop_rate.sleep();
