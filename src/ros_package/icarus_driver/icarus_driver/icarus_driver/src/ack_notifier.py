@@ -38,6 +38,7 @@ class Notifier():
         rospy.logerr("[%s] Ligths Handler Serial Port could not be opened\n", self.port_)
         os.system("rosnode kill " + NodeName)
 
+
 if __name__ == "__main__":
 
     rospy.init_node(NodeName)
